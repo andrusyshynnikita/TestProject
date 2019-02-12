@@ -80,7 +80,7 @@ namespace TestProject.Core.ViewModels
 
         public override void ViewAppearing()
         {
-            _apiService.RefreshDataAsync();
+           _apiService.RefreshDataAsync();
             var items = _taskService.GetAllDoneUserTasks(TwitterUserId.Id_User);
             TaskCollection = new MvxObservableCollection<TaskInfo>(items);
         }

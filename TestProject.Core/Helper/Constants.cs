@@ -10,7 +10,7 @@ namespace TestProject.Core.Helper
         public static string TWITTE_REQ_TOKEN = "https://api.twitter.com/oauth/request_token";
         public static string TWITTER_AUTH = "https://api.twitter.com/oauth/authorize";
         public static string TWITTER_ACCESS_TOKEN = "https://api.twitter.com/oauth/access_token";
-        public static string TWITTE_CALLBACKURL = "https://mobile.twitter.com";
+        public static string TWITTE_CALLBACKURL = "https://www.google.com/"; //"https://mobile.twitter.com";
         public static string TWITTER_REQUESTURL = "https://api.twitter.com/1.1/account/verify_credentials.json";
     }
 }

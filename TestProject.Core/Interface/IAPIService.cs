@@ -8,6 +8,6 @@ namespace TestProject.Core.Interface
 {
    public interface IAPIService
     {
-        Task<List<TaskInfo>> RefreshDataAsync();
+        void RefreshDataAsync();
     }
 }
