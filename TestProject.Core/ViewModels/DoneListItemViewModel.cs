@@ -27,7 +27,11 @@ namespace TestProject.Core.ViewModels
             ShowSecondPageCommand = new MvxAsyncCommand(async () => await _navigationService.Navigate<ItemViewModel>());
             _taskService = taskService;
             TaskViewCommand = new MvxAsyncCommand<TaskInfo>(NavigateMethod);
-
+            _apiService.OnRefresDonehDataHandler = new Action(() =>
+             {
+                 var items = _taskService.GetAllDoneUserTasks(TwitterUserId.Id_User);
+                 TaskCollection = new MvxObservableCollection<TaskInfo>(items);
+             });
         }
 
         public IMvxCommand RefreshCommand => _refreshCommand = _refreshCommand ?? new MvxCommand(DoRefresh);
@@ -43,7 +47,7 @@ namespace TestProject.Core.ViewModels
         public IMvxCommand ShowSecondPageCommand { get; set; }
 
         public IMvxCommand<TaskInfo> TaskViewCommand { get; set; }
-        
+
         public IMvxCommand LogoutCommand
         {
             get
@@ -51,7 +55,7 @@ namespace TestProject.Core.ViewModels
                 return new MvxAsyncCommand(LogOut);
             }
         }
-          
+
         private async Task NavigateMethod(TaskInfo taskInfo)
         {
             try
@@ -60,9 +64,9 @@ namespace TestProject.Core.ViewModels
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message); 
+                Console.WriteLine(ex.Message);
             }
-            
+
         }
 
         public MvxObservableCollection<TaskInfo> TaskCollection
@@ -80,9 +84,10 @@ namespace TestProject.Core.ViewModels
 
         public override void ViewAppearing()
         {
-           _apiService.RefreshDataAsync();
-            var items = _taskService.GetAllDoneUserTasks(TwitterUserId.Id_User);
-            TaskCollection = new MvxObservableCollection<TaskInfo>(items);
+            //var items = _taskService.GetAllDoneUserTasks(TwitterUserId.Id_User);
+            //TaskCollection = new MvxObservableCollection<TaskInfo>(items);
+
+            _apiService.RefreshDataAsync();
         }
 
         public bool IsRefreshing
@@ -97,14 +102,13 @@ namespace TestProject.Core.ViewModels
 
         private async Task LogOut()
         {
-           
-           _loginService.Logout();
+            _loginService.Logout();
             await _navigationService.Navigate<LoginViewModel>();
             await _navigationService.Close(this);
         }
 
         public override void Prepare(Action parameter)
-        { 
+        {
         }
     }
 

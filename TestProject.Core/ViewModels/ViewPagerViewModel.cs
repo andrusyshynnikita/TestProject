@@ -12,11 +12,13 @@ namespace TestProject.Core.ViewModels
     {
         private readonly IMvxNavigationService _navigationService;
         private ILoginService _loginService;
+        private IAPIService _aPIService;
 
-        public ViewPagerViewModel(IMvxNavigationService navigationService, ILoginService loginService)
+        public ViewPagerViewModel(IMvxNavigationService navigationService, ILoginService loginService, IAPIService aPIService)
         {
             _loginService = loginService;
             _navigationService = navigationService;
+            _aPIService = aPIService;
             DoneListItemViewModel = Mvx.IoCConstruct<DoneListItemViewModel>();
               NotDoneListItemViewModel = Mvx.IoCConstruct<NotDoneListItemViewModel>();
               AboutViewModel1 = Mvx.IoCConstruct<AboutViewModel>();
@@ -25,7 +27,7 @@ namespace TestProject.Core.ViewModels
            {
                LogoutCommand.Execute();
            });
-
+           
             ShowDoneListItemViewModelCommand = new MvxAsyncCommand<Action>(async (closeHandler) => await _navigationService.Navigate<DoneListItemViewModel, Action>(closeHandler));
             ShowNotDoneListItemViewModelCommand = new MvxAsyncCommand<Action>(async (closeHandler) => await _navigationService.Navigate<NotDoneListItemViewModel, Action>(closeHandler));
             ShowAboutViewModelCommand = new MvxAsyncCommand<Action>(async (closeHandler) => await _navigationService.Navigate<AboutViewModel, Action>(closeHandler));

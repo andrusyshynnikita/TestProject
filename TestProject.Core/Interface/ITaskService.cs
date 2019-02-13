@@ -9,8 +9,9 @@ namespace TestProject.Core.Interface
         List<TaskInfo> GetAllNotDoneUserTasks(string twitterUserId);
         void DeleteTask(int id);
         void InsertTask(TaskInfo taskInfo);
-        void DeleteAllTask();
+        void DeleteUserAllTask(string user_id);
         TaskInfo CurrentTask(int id);
+        void InsertAllUserTasks(List<TaskInfo> usertasks);
 
     }
 }

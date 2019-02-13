@@ -16,14 +16,21 @@ namespace TestProject.Core.ViewModels
         private MvxCommand _refreshCommand;
         private bool _isRefreshing;
         private ILoginService _loginService;
+        private IAPIService _apiService;
 
-        public NotDoneListItemViewModel(IMvxNavigationService mvxNavigationService, ITaskService taskService, ILoginService loginService)
+        public NotDoneListItemViewModel(IMvxNavigationService mvxNavigationService, ITaskService taskService, ILoginService loginService, IAPIService aPIService)
         {
+            _apiService = aPIService;
             _navigationService = mvxNavigationService;
             _loginService = loginService;
             _taskService = taskService;
             ShowSecondPageCommand = new MvxAsyncCommand(async () => await _navigationService.Navigate<ItemViewModel>());
             TaskViewCommand = new MvxAsyncCommand<TaskInfo>(NavigateMethod);
+
+            _apiService.OnRefresNotDonehDataHandler = new Action(() =>
+            {
+                DoRefresh();
+            });
 
         }
 
@@ -71,6 +78,7 @@ namespace TestProject.Core.ViewModels
         {
             var items = _taskService.GetAllNotDoneUserTasks(TwitterUserId.Id_User);
             TaskCollection = new MvxObservableCollection<TaskInfo>(items);
+            _apiService.RefreshDataAsync();
         }
 
         public bool IsRefreshing
@@ -85,7 +93,6 @@ namespace TestProject.Core.ViewModels
 
         private async Task LogOut()
         {
-
             _loginService.Logout();
             await _navigationService.Navigate<LoginViewModel>();
             await _navigationService.Close(this);
@@ -93,7 +100,6 @@ namespace TestProject.Core.ViewModels
 
         public override void Prepare(Action parameter)
         {
-           
         }
     }
 

@@ -41,6 +41,12 @@ namespace TestProject.Core.services
             _sQLiteConnection.Delete<TaskInfo>(id);
         }
 
+        public void InsertAllUserTasks(List<TaskInfo> usertasks)
+        {
+            _sQLiteConnection.InsertAll(usertasks);
+           
+        }
+
         public void InsertTask(TaskInfo taskInfo)
         {
             if (taskInfo.Id != 0)
@@ -52,10 +58,11 @@ namespace TestProject.Core.services
             _sQLiteConnection.Insert(taskInfo);
         }
 
-        public void DeleteAllTask()
+        public void DeleteUserAllTask(string user_id)
         {
 
-            _sQLiteConnection.DeleteAll<TaskInfo>();
+            _sQLiteConnection.Table<TaskInfo>()
+                .Where(x => x.User_Id == user_id).Delete();
         }
 
         public TaskInfo CurrentTask(int id)

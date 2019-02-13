@@ -13,6 +13,7 @@ namespace TestProject.Core.ViewModels
         private readonly IMvxNavigationService _navigationService;
         private readonly ITaskService _taskService;
         private readonly IAudioService _audioService;
+        private readonly IAPIService _apiService;
         private int _id;
         private string _title;
         private string _description;
@@ -30,11 +31,12 @@ namespace TestProject.Core.ViewModels
 
         }
 
-        public ItemViewModel(IMvxNavigationService mvxNavigationService, ITaskService taskService, IAudioService audioService)
+        public ItemViewModel(IMvxNavigationService mvxNavigationService, ITaskService taskService, IAudioService audioService, IAPIService apiService)
         {
             _taskService = taskService;
             _navigationService = mvxNavigationService;
             _audioService = audioService;
+            _apiService = apiService;
             IsPlayRecordingEnable = false;
             IsREcordChecking = true;
             IsPlayChecking = true;
@@ -54,7 +56,6 @@ namespace TestProject.Core.ViewModels
         {
             get { return new MvxAsyncCommand(CloseTask); }
         }
-        
 
         public int Id
         {
@@ -132,7 +133,7 @@ namespace TestProject.Core.ViewModels
             {
                 IsPlayChecking = false;
                 _audioService.PlayRecording(Id);
-                
+
             }
 
             else
@@ -141,7 +142,6 @@ namespace TestProject.Core.ViewModels
                 IsPlayChecking = true;
             }
         }
-
 
         private void StartRecording()
         {
@@ -160,26 +160,25 @@ namespace TestProject.Core.ViewModels
         private async Task CloseTask()
         {
             _audioService.DeleteNullFile();
-           await _navigationService.Close(this);
+            await _navigationService.Close(this);
         }
 
-        private void SaveTask()
+        private async void SaveTask()
         {
             TaskInfo taskInfo = new TaskInfo(Id, TwitterUserId.Id_User, Title, Description, Status);
             if (Title != null)
             {
-                _taskService.InsertTask(taskInfo);
+              await  _apiService.InsertOrUpdateTaskAsync(taskInfo);
             }
-                _audioService.RenameFile(taskInfo.Id);
+            _audioService.RenameFile(taskInfo.Id);
 
             _navigationService.Close(this);
         }
 
-        private void DeleteTask()
+        private async void DeleteTask()
         {
-            var position = Id;
 
-            _taskService.DeleteTask(position);
+            await _apiService.DeleteTaskAsync(Id);
 
             _navigationService.Close(this);
         }
@@ -196,7 +195,7 @@ namespace TestProject.Core.ViewModels
             Description = _taskInfo.Description;
             Status = _taskInfo.Status;
 
-            if(_audioService.CheckAudioFile(Id)== true)
+            if (_audioService.CheckAudioFile(Id) == true)
             {
                 IsPlayRecordingEnable = true;
             }
@@ -244,7 +243,7 @@ namespace TestProject.Core.ViewModels
         {
             get
             {
-                if (_taskService.CurrentTask(Id)==null)
+                if (_taskService.CurrentTask(Id) == null)
                 {
                     _deleteTaskEnable = false;
                 }
