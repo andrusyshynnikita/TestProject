@@ -5,6 +5,7 @@ using MvvmCross.Commands;
 using TestProject.Core.Interface;
 using System.Threading.Tasks;
 using System;
+using Xamarin.Essentials;
 
 namespace TestProject.Core.ViewModels
 {
@@ -84,10 +85,18 @@ namespace TestProject.Core.ViewModels
 
         public override void ViewAppearing()
         {
-            //var items = _taskService.GetAllDoneUserTasks(TwitterUserId.Id_User);
-            //TaskCollection = new MvxObservableCollection<TaskInfo>(items);
+            var current = Connectivity.NetworkAccess;
 
-            _apiService.RefreshDataAsync();
+            if (current == NetworkAccess.Internet)
+            {
+                _apiService.RefreshDataAsync();
+            }
+
+            else
+            {
+                var items = _taskService.GetAllDoneUserTasks(TwitterUserId.Id_User);
+                TaskCollection = new MvxObservableCollection<TaskInfo>(items);
+            }
         }
 
         public bool IsRefreshing

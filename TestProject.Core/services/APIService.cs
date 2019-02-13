@@ -28,7 +28,7 @@ namespace TestProject.Core.services
         {
             try
             {
-                var uri = new Uri(string.Format("http://10.10.3.221:58778/api/values/" + TwitterUserId.Id_User));
+                var uri = new Uri(string.Format("http://10.10.3.221:58778/api/tasks/" + TwitterUserId.Id_User));
 
                 var response = await client.GetAsync(uri);
 
@@ -63,7 +63,7 @@ namespace TestProject.Core.services
 
         public async Task InsertOrUpdateTaskAsync(TaskInfo item)
         {
-            var uri = new Uri(string.Format("http://10.10.3.221:58778/api/values/"));
+            var uri = new Uri(string.Format("http://10.10.3.221:58778/api/tasks/"));
             var json = JsonConvert.SerializeObject(item);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage response = null;
@@ -95,7 +95,7 @@ namespace TestProject.Core.services
 
         public async Task DeleteTaskAsync(int id)
         {
-            var uri = new Uri(string.Format("http://10.10.3.221:58778/api/values/" + id));
+            var uri = new Uri(string.Format("http://10.10.3.221:58778/api/tasks/" + id));
 
             var response = await client.DeleteAsync(uri);
             if (response.IsSuccessStatusCode)

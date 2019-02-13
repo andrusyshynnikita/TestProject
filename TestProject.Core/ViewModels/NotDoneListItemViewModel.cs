@@ -76,8 +76,6 @@ namespace TestProject.Core.ViewModels
 
         public override void ViewAppearing()
         {
-            var items = _taskService.GetAllNotDoneUserTasks(TwitterUserId.Id_User);
-            TaskCollection = new MvxObservableCollection<TaskInfo>(items);
             _apiService.RefreshDataAsync();
         }
 
