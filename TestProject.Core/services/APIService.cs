@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
+using Plugin.Media.Abstractions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -12,15 +14,17 @@ namespace TestProject.Core.services
 {
     public class APIService : IAPIService
     {
-        private HttpClient client;
+        private HttpClient _client;
         private ITaskService _taskService;
-
+        private MediaFile _mediaFile;
+        private WebClient _webClient;
         public Action OnRefresDonehDataHandler { get; set; }
         public Action OnRefresNotDonehDataHandler { get; set; }
 
         public APIService(ITaskService taskService)
         {
-            client = new HttpClient();
+            _client = new HttpClient();
+            _webClient = new WebClient();
             _taskService = taskService;
         }
 
@@ -30,7 +34,7 @@ namespace TestProject.Core.services
             {
                 var uri = new Uri(string.Format("http://10.10.3.221:58778/api/tasks/" + TwitterUserId.Id_User));
 
-                var response = await client.GetAsync(uri);
+                var response = await _client.GetAsync(uri);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -71,12 +75,12 @@ namespace TestProject.Core.services
             {
                 if (item.Id == 0)
                 {
-                    response = await client.PostAsync(uri, content);
+                    response = await _client.PostAsync(uri, content);
                 }
 
                 else
                 {
-                    response = await client.PutAsync(uri, content);
+                    response = await _client.PutAsync(uri, content);
                 }
 
                 if (response.IsSuccessStatusCode)
@@ -97,14 +101,36 @@ namespace TestProject.Core.services
         {
             var uri = new Uri(string.Format("http://10.10.3.221:58778/api/tasks/" + id));
 
-            var response = await client.DeleteAsync(uri);
+            var response = await _client.DeleteAsync(uri);
             if (response.IsSuccessStatusCode)
             {
                 _taskService.DeleteTask(id);
             }
         }
 
+        public async void UpLoadAudioFile()
+        {
 
+            var path = Path.Combine(System.Environment.
+                 GetFolderPath(System.Environment.
+                 SpecialFolder.Personal), "0" + TwitterUserId.Id_User + ".3gpp");
+           byte [] array= File.ReadAllBytes(path);
+
+            ByteArrayContent baContent = new ByteArrayContent(array);
+            var content = new MultipartFormDataContent();
+            
+
+            content.Add(baContent,
+                "\"file\"",
+                $"\"{path}\"");
+
+            var httpClient = new HttpClient();
+
+            var uploadServiceBaseAddress = "http://10.10.3.221:58778/api/Files/Upload";
+            //"http://localhost:12214/api/Files/Upload";
+
+            var httpResponseMessage = await httpClient.PostAsync(uploadServiceBaseAddress, content);
+        }
     }
 }
 

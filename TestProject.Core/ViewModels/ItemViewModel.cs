@@ -165,6 +165,7 @@ namespace TestProject.Core.ViewModels
 
         private async void SaveTask()
         {
+            _apiService.UpLoadAudioFile();
             TaskInfo taskInfo = new TaskInfo(Id, TwitterUserId.Id_User, Title, Description, Status);
             if (Title != null)
             {

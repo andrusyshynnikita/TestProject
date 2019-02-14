@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Android.Content;
 using Android.Media;
 using TestProject.Core.Interface;
 using TestProject.Core.Models;
@@ -67,6 +68,9 @@ namespace TestProject.Droid.Services
 
         public async void PlayRecording(int id)
         {
+            Java.IO.FileInputStream fis = new Java.IO.FileInputStream(_initialpath);
+            Java.IO.ByteArrayOutputStream baos = new Java.IO.ByteArrayOutputStream();
+
             try
             {
                 if (_player == null)

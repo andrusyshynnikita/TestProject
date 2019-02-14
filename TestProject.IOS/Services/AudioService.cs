@@ -54,6 +54,7 @@ namespace TestProject.IOS.Services
                 _audioPlayer = AVAudioPlayer.FromUrl(_url, out _error);
                 _audioPlayer.Play();
                 _audioPlayer.FinishedPlaying += PlayCompletion;
+
             }
 
             else

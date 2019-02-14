@@ -13,6 +13,7 @@ namespace TestProject.Core.Interface
         Action OnRefresDonehDataHandler { get; set; }
         Action OnRefresNotDonehDataHandler { get; set; }
         Task DeleteTaskAsync(int id);
+        void UpLoadAudioFile();
 
     }
 }
