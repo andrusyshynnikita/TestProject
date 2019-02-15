@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using TestProject.Core.Helper;
 using TestProject.Core.Interface;
 using TestProject.Core.Models;
 
@@ -18,6 +19,8 @@ namespace TestProject.Core.services
         private ITaskService _taskService;
         private MediaFile _mediaFile;
         private WebClient _webClient;
+        private byte[] _byteArrayAudio;
+
         public Action OnRefresDonehDataHandler { get; set; }
         public Action OnRefresNotDonehDataHandler { get; set; }
 
@@ -67,10 +70,34 @@ namespace TestProject.Core.services
 
         public async Task InsertOrUpdateTaskAsync(TaskInfo item)
         {
-            var uri = new Uri(string.Format("http://10.10.3.221:58778/api/tasks/"));
+           
+
+            var content = new MultipartFormDataContent();
+
+            var bl = File.Exists(Constants.INITIAL_AUDIO_FILE_PATH);
+
+            if (bl == true)
+            {
+                var fileName =  Guid.NewGuid() + ".3gpp";
+
+                item.AudioFilePath = fileName;
+
+                _byteArrayAudio = File.ReadAllBytes(Constants.INITIAL_AUDIO_FILE_PATH);
+                ByteArrayContent baContent = new ByteArrayContent(_byteArrayAudio);
+
+                content.Add(baContent,
+                "\"file\"",
+                $"\"{fileName}\"");
+            }
+
+            var uri = new Uri(string.Format("http://10.10.3.221:58778/api/Files/Upload"));
+
             var json = JsonConvert.SerializeObject(item);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            content.Add(new StringContent(json, Encoding.UTF8, "application/json"), "\"TaskModel\"");
+
             HttpResponseMessage response = null;
+
             try
             {
                 if (item.Id == 0)
@@ -86,7 +113,6 @@ namespace TestProject.Core.services
                 if (response.IsSuccessStatusCode)
                 {
                     _taskService.InsertTask(item);
-                    //OnRefresDonehDataHandler();
                 }
             }
 
@@ -97,40 +123,36 @@ namespace TestProject.Core.services
 
         }
 
-        public async Task DeleteTaskAsync(int id)
+        public async Task DeleteTaskAsync(TaskInfo item)
         {
-            var uri = new Uri(string.Format("http://10.10.3.221:58778/api/tasks/" + id));
-
+            if (File.Exists(Constants.INITIAL_AUDIO_FILE_PATH) == true)
+            {
+                File.Delete(Constants.INITIAL_AUDIO_FILE_PATH);
+            }
+            var json = JsonConvert.SerializeObject(item);
+            var uri = new Uri(string.Format("http://10.10.3.221:58778/api/tasks/" + item.Id));
             var response = await _client.DeleteAsync(uri);
             if (response.IsSuccessStatusCode)
             {
-                _taskService.DeleteTask(id);
+                _taskService.DeleteTask(item.Id);
+
             }
         }
 
-        public async void UpLoadAudioFile()
+        public async Task DownloadAudioFile(int id, string path)
         {
+            var uri = new Uri("http://10.10.3.221:58778/api/DownloadFile/" + id);
 
-            var path = Path.Combine(System.Environment.
-                 GetFolderPath(System.Environment.
-                 SpecialFolder.Personal), "0" + TwitterUserId.Id_User + ".3gpp");
-           byte [] array= File.ReadAllBytes(path);
+            var response = await _client.GetAsync(uri);
 
-            ByteArrayContent baContent = new ByteArrayContent(array);
-            var content = new MultipartFormDataContent();
-            
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsByteArrayAsync();
+                File.WriteAllBytes(Constants.AUDIO_FILE_PATH(path), content);
 
-            content.Add(baContent,
-                "\"file\"",
-                $"\"{path}\"");
-
-            var httpClient = new HttpClient();
-
-            var uploadServiceBaseAddress = "http://10.10.3.221:58778/api/Files/Upload";
-            //"http://localhost:12214/api/Files/Upload";
-
-            var httpResponseMessage = await httpClient.PostAsync(uploadServiceBaseAddress, content);
+            }
         }
+
     }
 }
 

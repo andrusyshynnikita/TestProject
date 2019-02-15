@@ -66,11 +66,8 @@ namespace TestProject.Droid.Services
             }
         }
 
-        public async void PlayRecording(int id)
+        public async void PlayRecording(string path)
         {
-            Java.IO.FileInputStream fis = new Java.IO.FileInputStream(_initialpath);
-            Java.IO.ByteArrayOutputStream baos = new Java.IO.ByteArrayOutputStream();
-
             try
             {
                 if (_player == null)
@@ -93,18 +90,14 @@ namespace TestProject.Droid.Services
                     _player.Completion += PlayCompletion;
                 }
 
-                else
+                if(path!= null)
                 {
-                    path = Path.Combine(System.Environment.
-                GetFolderPath(System.Environment.
-                SpecialFolder.Personal), id.ToString() + TwitterUserId.Id_User + ".3gpp");
-
                     Java.IO.File file2 = new Java.IO.File(path);
                     Java.IO.FileInputStream fis2 = new Java.IO.FileInputStream(file2);
+
                     await _player.SetDataSourceAsync(fis2.FD);
                     _player.Prepare();
                     _player.Start();
-
                     _player.Completion += PlayCompletion;
                 }
 

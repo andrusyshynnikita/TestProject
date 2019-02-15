@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TestProject.Core.Interface;
 using TestProject.Core.Models;
 using System;
+using TestProject.Core.Helper;
 
 namespace TestProject.Core.ViewModels
 {
@@ -24,6 +25,7 @@ namespace TestProject.Core.ViewModels
         private bool _recordcheck;
         private bool _playdcheck;
         private bool _playRecordEnable;
+        private string _audio_File_Path;
 
         public override async Task Initialize()
         {
@@ -106,6 +108,8 @@ namespace TestProject.Core.ViewModels
             }
         }
 
+        public string AudioFileName { get; set; }
+
         public IMvxCommand SaveCommand
         {
             get { return new MvxCommand(SaveTask); }
@@ -129,10 +133,15 @@ namespace TestProject.Core.ViewModels
 
         private void PlayRecording()
         {
+            if (AudioFileName != null)
+            {
+                _audio_File_Path = Constants.AUDIO_FILE_PATH(AudioFileName);
+            }
+
             if (IsPlayChecking == true)
             {
                 IsPlayChecking = false;
-                _audioService.PlayRecording(Id);
+                _audioService.PlayRecording(_audio_File_Path);
 
             }
 
@@ -165,23 +174,21 @@ namespace TestProject.Core.ViewModels
 
         private async void SaveTask()
         {
-            _apiService.UpLoadAudioFile();
-            TaskInfo taskInfo = new TaskInfo(Id, TwitterUserId.Id_User, Title, Description, Status);
+            TaskInfo taskInfo = new TaskInfo(Id, TwitterUserId.Id_User, Title, Description, Status, AudioFileName);
             if (Title != null)
             {
-              await  _apiService.InsertOrUpdateTaskAsync(taskInfo);
+                await _apiService.InsertOrUpdateTaskAsync(taskInfo);
             }
-            _audioService.RenameFile(taskInfo.Id);
 
-            _navigationService.Close(this);
+            await _navigationService.Close(this);
         }
 
         private async void DeleteTask()
         {
 
-            await _apiService.DeleteTaskAsync(Id);
+            await _apiService.DeleteTaskAsync(new TaskInfo(Id, TwitterUserId.Id_User, Title, Description, Status, AudioFileName));
 
-            _navigationService.Close(this);
+            await _navigationService.Close(this);
         }
 
         public override void Prepare()
@@ -195,9 +202,12 @@ namespace TestProject.Core.ViewModels
             Title = _taskInfo.Title;
             Description = _taskInfo.Description;
             Status = _taskInfo.Status;
+            AudioFileName = _taskInfo.AudioFilePath;
 
-            if (_audioService.CheckAudioFile(Id) == true)
+
+            if (AudioFileName != null)
             {
+                _apiService.DownloadAudioFile(Id, AudioFileName);
                 IsPlayRecordingEnable = true;
             }
             else

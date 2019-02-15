@@ -12,8 +12,7 @@ namespace TestProject.Core.Interface
         Task InsertOrUpdateTaskAsync(TaskInfo item);
         Action OnRefresDonehDataHandler { get; set; }
         Action OnRefresNotDonehDataHandler { get; set; }
-        Task DeleteTaskAsync(int id);
-        void UpLoadAudioFile();
-
+        Task DeleteTaskAsync(TaskInfo item);
+        Task DownloadAudioFile(int id, string path);
     }
 }

@@ -3,6 +3,7 @@ using System.IO;
 using AudioToolbox;
 using AVFoundation;
 using Foundation;
+using TestProject.Core.Helper;
 using TestProject.Core.Interface;
 using TestProject.Core.Models;
 
@@ -14,9 +15,6 @@ namespace TestProject.IOS.Services
         private AVAudioPlayer _audioPlayer;
         private NSUrl _url;
         private NSError _error;
-        string _initialpath = Path.Combine(System.Environment.
-               GetFolderPath(System.Environment.
-               SpecialFolder.Personal), "0" + TwitterUserId.Id_User + ".3gpp");
 
         public Action OnRecordHandler { get; set; }
         public Action OnPlaydHandler { get; set; }
@@ -37,10 +35,10 @@ namespace TestProject.IOS.Services
 
         public void DeleteNullFile()
         {
-            File.Delete(_initialpath);
+            File.Delete(Constants.INITIAL_AUDIO_FILE_PATH);
         }
 
-        public void PlayRecording(int id)
+        public void PlayRecording(string path)
         {
             if (_audioPlayer != null)
             {
@@ -48,20 +46,17 @@ namespace TestProject.IOS.Services
                 _audioPlayer.Dispose();
             }
 
-            if (File.Exists(_initialpath))
+            if (File.Exists(Constants.INITIAL_AUDIO_FILE_PATH))
             {
-                _url = NSUrl.FromFilename(_initialpath);
+                _url = NSUrl.FromFilename(Constants.INITIAL_AUDIO_FILE_PATH);
                 _audioPlayer = AVAudioPlayer.FromUrl(_url, out _error);
                 _audioPlayer.Play();
                 _audioPlayer.FinishedPlaying += PlayCompletion;
 
             }
 
-            else
+            if(File.Exists(path))
             {
-                var path = Path.Combine(System.Environment.
-                GetFolderPath(System.Environment.
-                SpecialFolder.Personal), id.ToString() + TwitterUserId.Id_User + ".3gpp");
                 _url = NSUrl.FromFilename(path);
                 _audioPlayer = AVAudioPlayer.FromUrl(_url, out _error);
                 _audioPlayer.Play();
@@ -93,18 +88,18 @@ namespace TestProject.IOS.Services
             var path = Path.Combine(System.Environment.
                  GetFolderPath(System.Environment.
                  SpecialFolder.Personal), id.ToString() + TwitterUserId.Id_User + ".3gpp");
-            if (File.Exists(_initialpath))
+            if (File.Exists(Constants.INITIAL_AUDIO_FILE_PATH))
             {
                 if (File.Exists(path))
                 {
                     File.Delete(path);
-                    File.Move(_initialpath, path);
-                    File.Delete(_initialpath);
+                    File.Move(Constants.INITIAL_AUDIO_FILE_PATH, path);
+                    File.Delete(Constants.INITIAL_AUDIO_FILE_PATH);
                 }
                 else
                 {
-                    File.Move(_initialpath, path);
-                    File.Delete(_initialpath);
+                    File.Move(Constants.INITIAL_AUDIO_FILE_PATH, path);
+                    File.Delete(Constants.INITIAL_AUDIO_FILE_PATH);
                 }
             }
         }
@@ -120,7 +115,6 @@ namespace TestProject.IOS.Services
         public void StopRecording()
         {
             _audioRecorder.Stop();
-            var hdf1 = File.ReadAllBytes(_initialpath);
             OnRecordHandler();
         }
 
@@ -160,7 +154,7 @@ namespace TestProject.IOS.Services
            var settings = NSDictionary.FromObjectsAndKeys(values, keys);
 
             NSError error;
-           var _url = NSUrl.FromFilename(_initialpath);
+           var _url = NSUrl.FromFilename(Constants.INITIAL_AUDIO_FILE_PATH);
             _audioRecorder = AVAudioRecorder.Create(_url, new AudioSettings(settings), out error);
             if ((_audioRecorder == null) || (error != null))
             {
