@@ -15,7 +15,7 @@ namespace TestProject.Droid.Services
         private string path;
         private string _initialpath = Path.Combine(System.Environment.
                GetFolderPath(System.Environment.
-               SpecialFolder.Personal), "0" + TwitterUserId.Id_User + ".3gpp");
+               SpecialFolder.Personal), "0" + TwitterUserId.Id_User + ".mpeg4");
 
 
 
@@ -38,8 +38,8 @@ namespace TestProject.Droid.Services
                     File.Delete(_initialpath);
 
                 _recorder.SetAudioSource(AudioSource.Mic);
-                _recorder.SetOutputFormat(OutputFormat.ThreeGpp);
-                _recorder.SetAudioEncoder(AudioEncoder.AmrNb);
+                _recorder.SetOutputFormat(OutputFormat.Mpeg4);
+                _recorder.SetAudioEncoder(AudioEncoder.Aac);
                 _recorder.SetOutputFile(_initialpath);
                 _recorder.Prepare();
                 _recorder.Start();
@@ -92,10 +92,10 @@ namespace TestProject.Droid.Services
 
                 if(path!= null)
                 {
-                    Java.IO.File file2 = new Java.IO.File(path);
-                    Java.IO.FileInputStream fis2 = new Java.IO.FileInputStream(file2);
-
-                    await _player.SetDataSourceAsync(fis2.FD);
+                    //Java.IO.File file2 = new Java.IO.File(path);
+                    //Java.IO.FileInputStream fis2 = new Java.IO.FileInputStream(file2);
+                    //if(File.Exists(file2.ToString()))
+                    await _player.SetDataSourceAsync(path);
                     _player.Prepare();
                     _player.Start();
                     _player.Completion += PlayCompletion;

@@ -57,10 +57,20 @@ namespace TestProject.IOS.Services
 
             if(File.Exists(path))
             {
-                _url = NSUrl.FromFilename(path);
-                _audioPlayer = AVAudioPlayer.FromUrl(_url, out _error);
-                _audioPlayer.Play();
-                _audioPlayer.FinishedPlaying += PlayCompletion;
+                try
+                {
+                    ObjCRuntime.Class.ThrowOnInitFailure = false;
+                    _url = NSUrl.FromString(path);
+                    _audioPlayer = AVAudioPlayer.FromUrl(_url);
+                    _audioPlayer.Play();
+                    _audioPlayer.FinishedPlaying += PlayCompletion;
+                    
+                }
+
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message); 
+                }
             }
         }
 
@@ -123,12 +133,15 @@ namespace TestProject.IOS.Services
 
             var audioSession = AVAudioSession.SharedInstance();
             var err = audioSession.SetCategory(AVAudioSessionCategory.PlayAndRecord);
+
             if (err != null)
             {
                 Console.WriteLine("audioSession: {0}", err);
                 return false;
             }
+
             err = audioSession.SetActive(true);
+
             if (err != null)
             {
                 Console.WriteLine("audioSession: {0}", err);
@@ -150,18 +163,18 @@ namespace TestProject.IOS.Services
                 AVAudioSettings.AVNumberOfChannelsKey,
                 AVAudioSettings.AVEncoderAudioQualityKey
             };
-          
-           var settings = NSDictionary.FromObjectsAndKeys(values, keys);
+
+            var settings = NSDictionary.FromObjectsAndKeys(values, keys);
 
             NSError error;
-           var _url = NSUrl.FromFilename(Constants.INITIAL_AUDIO_FILE_PATH);
+            var _url = NSUrl.FromFilename(Constants.INITIAL_AUDIO_FILE_PATH);
             _audioRecorder = AVAudioRecorder.Create(_url, new AudioSettings(settings), out error);
             if ((_audioRecorder == null) || (error != null))
             {
                 Console.WriteLine(error);
                 return false;
             }
-           
+
             if (!_audioRecorder.PrepareToRecord())
             {
                 _audioRecorder.Dispose();

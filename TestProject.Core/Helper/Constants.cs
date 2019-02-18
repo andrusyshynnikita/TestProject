@@ -21,7 +21,7 @@ namespace TestProject.Core.Helper
         //** For AudioService **//
         public static string INITIAL_AUDIO_FILE_PATH = Path.Combine(System.Environment.
                GetFolderPath(System.Environment.
-               SpecialFolder.Personal), "0" + TwitterUserId.Id_User) + ".3gpp";
+               SpecialFolder.Personal), "0" + TwitterUserId.Id_User) + ".m4a";
 
         public static string AUDIO_FILE_PATH(string nameFile)
         {

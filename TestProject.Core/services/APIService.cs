@@ -78,7 +78,7 @@ namespace TestProject.Core.services
 
             if (bl == true)
             {
-                var fileName =  Guid.NewGuid() + ".3gpp";
+                var fileName =  Guid.NewGuid() + ".mpeg4";
 
                 item.AudioFilePath = fileName;
 
