@@ -27,6 +27,7 @@ namespace TestProject.IOS.Views
             NavigationController.NavigationBar.TintColor = UIColor.Black;
             _btnBack = new UIBarButtonItem(UIBarButtonSystemItem.Reply, null);
             NavigationItem.SetLeftBarButtonItem(_btnBack, false);
+
             var set = this.CreateBindingSet<ItemView, ItemViewModel>();
             set.Bind(Title_text).To(vm => vm.Title);
             set.Bind(Title_text).For(v => v.Enabled).To(vm => vm.IsTitleEnable);
@@ -34,8 +35,10 @@ namespace TestProject.IOS.Views
             set.Bind(Status_switch1).To(vm => vm.Status);
             set.Bind(Save_button).To(vm => vm.SaveCommand);
             set.Bind(Save_button).For(v => v.Enabled).To(vm => vm.IsSavingTaskEnable);
+            set.Bind(Save_button).For("Visibility").To(vm => vm.IsNetChecking).WithConversion("VisibilityButton");
             set.Bind(Delete_button).To(vm => vm.DeleteCommand);
             set.Bind(Delete_button).For(v => v.Enabled).To(vm => vm.IsDeletingTaskEnable);
+            set.Bind(Delete_button).For("Visibility").To(vm => vm.IsNetChecking).WithConversion("VisibilityButton");
             set.Bind(_btnBack).For("Clicked").To(vm => vm.CloseCommand);
             set.Bind(recording).To(vm => vm.StartRecordingCommand);
             set.Bind(recording).For(v => v.BackgroundColor).To(vm => vm.IsREcordChecking).WithConversion("Color");
@@ -44,6 +47,7 @@ namespace TestProject.IOS.Views
             set.Bind(Play).For(v => v.Enabled).To(vm => vm.IsPlayRecordingEnable);
             set.Bind(Play).For(v => v.BackgroundColor).To(vm => vm.IsPlayChecking).WithConversion("Color");
             set.Bind(Play).For("Title").To(vm => vm.IsPlayChecking).WithConversion("PlayingButton");
+            set.Bind(netWork_label).For("Visibility").To(vm => vm.IsNetChecking).WithConversion("Visibility");
             set.Apply();
 
             this.Title_text.ShouldReturn += (textField) =>
@@ -51,12 +55,6 @@ namespace TestProject.IOS.Views
                 textField.ResignFirstResponder();
                 return true;
 
-            };
-
-            this.Description_text.ShouldEndEditing += (textField) =>
-            {
-                textField.ResignFirstResponder();
-                return true;
             };
 
             var g = new UITapGestureRecognizer(() => View.EndEditing(true));

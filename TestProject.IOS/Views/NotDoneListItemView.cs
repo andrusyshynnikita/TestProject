@@ -1,3 +1,4 @@
+using Foundation;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using MvvmCross.Platforms.Ios.Views;
@@ -29,6 +30,9 @@ namespace TestProject.IOS.Views
             NavigationController.NavigationBar.BarTintColor = UIColor.Purple;
             NavigationController.NavigationBar.TintColor = UIColor.Black;
 
+            UIDevice.Notifications.ObserveOrientationDidChange(OrientationsHandler);
+            netWork_button_constraint.Constant = TabBarController.TabBar.Frame.Size.Height;
+
             var source = new TasksTableViewSource(NotDoneTasksTableView);
             NotDoneTasksTableView.Source = source;
             var set = this.CreateBindingSet<NotDoneListItemView, NotDoneListItemViewModel>();
@@ -37,8 +41,14 @@ namespace TestProject.IOS.Views
             set.Bind(_btnCAdd).For("Clicked").To(vm => vm.ShowSecondPageCommand);
             set.Bind(_refreshControl).For(r => r.IsRefreshing).To(vm => vm.IsRefreshing);
             set.Bind(_refreshControl).For(r => r.RefreshCommand).To(vm => vm.RefreshCommand);
+            set.Bind(netWork_label).For("Visibility").To(vm => vm.IsNetChecking).WithConversion("Visibility");
             set.Apply();
             NotDoneTasksTableView.ReloadData();
+        }
+
+        private void OrientationsHandler(object sender, NSNotificationEventArgs e)
+        {
+            netWork_button_constraint.Constant = TabBarController.TabBar.Frame.Size.Height;
         }
     }
 }

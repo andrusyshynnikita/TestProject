@@ -17,11 +17,29 @@ namespace TestProject.IOS.Views
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UITableView DoneTasksTableView { get; set; }
 
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.NSLayoutConstraint netWork_button_constraint { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel netWork_label { get; set; }
+
         void ReleaseDesignerOutlets ()
         {
             if (DoneTasksTableView != null) {
                 DoneTasksTableView.Dispose ();
                 DoneTasksTableView = null;
+            }
+
+            if (netWork_button_constraint != null) {
+                netWork_button_constraint.Dispose ();
+                netWork_button_constraint = null;
+            }
+
+            if (netWork_label != null) {
+                netWork_label.Dispose ();
+                netWork_label = null;
             }
         }
     }

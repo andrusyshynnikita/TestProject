@@ -17,6 +17,10 @@ namespace TestProject.IOS.Views
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIButton LoginTwitter { get; set; }
 
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel netWork_label { get; set; }
+
         [Action ("LoginButton_TouchUpInside:")]
         [GeneratedCode ("iOS Designer", "1.0")]
         partial void LoginButton_TouchUpInside (UIKit.UIButton sender);
@@ -26,6 +30,11 @@ namespace TestProject.IOS.Views
             if (LoginTwitter != null) {
                 LoginTwitter.Dispose ();
                 LoginTwitter = null;
+            }
+
+            if (netWork_label != null) {
+                netWork_label.Dispose ();
+                netWork_label = null;
             }
         }
     }

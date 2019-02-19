@@ -17,9 +17,8 @@ namespace TestProject.Core.services
     {
         private HttpClient _client;
         private ITaskService _taskService;
-        private MediaFile _mediaFile;
-        private WebClient _webClient;
         private byte[] _byteArrayAudio;
+        private ByteArrayContent _baContent;
 
         public Action OnRefresDonehDataHandler { get; set; }
         public Action OnRefresNotDonehDataHandler { get; set; }
@@ -27,7 +26,6 @@ namespace TestProject.Core.services
         public APIService(ITaskService taskService)
         {
             _client = new HttpClient();
-            _webClient = new WebClient();
             _taskService = taskService;
         }
 
@@ -70,24 +68,37 @@ namespace TestProject.Core.services
 
         public async Task InsertOrUpdateTaskAsync(TaskInfo item)
         {
-           
+
 
             var content = new MultipartFormDataContent();
 
-            var bl = File.Exists(Constants.INITIAL_AUDIO_FILE_PATH);
+            bool initial_File = File.Exists(Constants.INITIAL_AUDIO_FILE_PATH);
 
-            if (bl == true)
+            if (initial_File == true)
             {
-                var fileName =  Guid.NewGuid() + ".mpeg4";
+                _byteArrayAudio = File.ReadAllBytes(Constants.INITIAL_AUDIO_FILE_PATH);
+
+                _baContent = new ByteArrayContent(_byteArrayAudio);
+
+                File.Delete(Constants.INITIAL_AUDIO_FILE_PATH);
+            }
+
+            if (item.AudioFilePath == null && initial_File == true)
+            {
+                var fileName = Guid.NewGuid() + ".m4a";
 
                 item.AudioFilePath = fileName;
 
-                _byteArrayAudio = File.ReadAllBytes(Constants.INITIAL_AUDIO_FILE_PATH);
-                ByteArrayContent baContent = new ByteArrayContent(_byteArrayAudio);
+                content.Add(_baContent,
+            "\"file\"",
+            $"\"{fileName}\"");
+            }
 
-                content.Add(baContent,
-                "\"file\"",
-                $"\"{fileName}\"");
+            if (item.AudioFilePath != null && initial_File == true)
+            {
+                content.Add(_baContent,
+            "\"file\"",
+            $"\"{item.AudioFilePath}\"");
             }
 
             var uri = new Uri(string.Format("http://10.10.3.221:58778/api/Files/Upload"));
@@ -125,17 +136,20 @@ namespace TestProject.Core.services
 
         public async Task DeleteTaskAsync(TaskInfo item)
         {
-            if (File.Exists(Constants.INITIAL_AUDIO_FILE_PATH) == true)
+            if (File.Exists(Constants.INITIAL_AUDIO_FILE_PATH))
             {
                 File.Delete(Constants.INITIAL_AUDIO_FILE_PATH);
             }
+
             var json = JsonConvert.SerializeObject(item);
-            var uri = new Uri(string.Format("http://10.10.3.221:58778/api/tasks/" + item.Id));
+
+            Uri uri = new Uri(string.Format("http://10.10.3.221:58778/api/tasks/" + item.Id));
+
             var response = await _client.DeleteAsync(uri);
+
             if (response.IsSuccessStatusCode)
             {
                 _taskService.DeleteTask(item.Id);
-
             }
         }
 
@@ -149,7 +163,6 @@ namespace TestProject.Core.services
             {
                 var content = await response.Content.ReadAsByteArrayAsync();
                 File.WriteAllBytes(Constants.AUDIO_FILE_PATH(path), content);
-
             }
         }
 

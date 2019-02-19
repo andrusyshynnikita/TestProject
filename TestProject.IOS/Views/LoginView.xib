@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="view" destination="2" id="RRd-Eg-VrN"/>
                 <outlet property="LoginTwitter" destination="598" id="name-outlet-598"/>
+                <outlet property="netWork_label" destination="1440" id="name-outlet-1440"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -32,11 +33,23 @@
                         <action selector="LoginButton_TouchUpInside:" destination="-1" id="898" eventType="touchUpInside"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No NetWork Access" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="1440" translatesAutoresizingMaskIntoConstraints="NO" misplaced="YES">
+                    <rect key="frame" x="186" y="707" width="42" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="highlightedColor"/>
+                    <color key="backgroundColor" colorSpace="calibratedRGB" red="1" green="0" blue="0" alpha="1"/>
+                    <constraints>
+                        <constraint id="1554" firstAttribute="height" constant="20"/>
+                    </constraints>
+                </label>
             </subviews>
             <constraints>
                 <constraint id="1156" firstAttribute="trailing" secondItem="598" secondAttribute="trailing" constant="100"/>
                 <constraint id="1157" firstItem="598" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="100"/>
                 <constraint id="1160" firstItem="598" firstAttribute="top" secondItem="2" secondAttribute="top" constant="159"/>
+                <constraint id="1441" firstAttribute="trailing" secondItem="1440" secondAttribute="trailing"/>
+                <constraint id="1442" firstItem="1440" firstAttribute="leading" secondItem="2" secondAttribute="leading"/>
+                <constraint id="1443" firstAttribute="bottom" secondItem="1440" secondAttribute="bottom"/>
             </constraints>
         </view>
     </objects>

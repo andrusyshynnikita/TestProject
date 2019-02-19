@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"	
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"	
      xmlns:local="http://schemas.android.com/apk/res-auto"  
     android:orientation="vertical"
 	android:id="@+id/item_Layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 	android:background="#808080">
-	<include
-		layout="@layout/toolbar_2"/>
+	
 	<ScrollView
       android:layout_width="match_parent"
-      android:layout_height="match_parent">
+      android:layout_height="wrap_content"
+		android:layout_marginBottom = "15dp">
 	<LinearLayout android:orientation="vertical"
 	android:id="@+id/item_Layout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+			<include
+		layout="@layout/toolbar_2"/>
 	<EditText
 		android:id = "@+id/name_text"
 		android:layout_width = "match_parent"
@@ -71,6 +73,7 @@
 		android:orientation="horizontal"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		local:MvxBind = "Visibility VisibilityButton(IsNetChecking)"
 		android:layout_marginTop="15dp">
 		<Button
 			android:id = "@+id/Savetask"
@@ -127,4 +130,12 @@
 	</LinearLayout>
 	</LinearLayout>
 </ScrollView>
-</LinearLayout>
+			<TextView
+		android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+		android:text="No NetWork Access"
+		android:gravity = "center"
+	    android:background = "#FF0000"
+		android:layout_alignParentBottom = "true"
+		local:MvxBind="Visibility Visibility(IsNetChecking)"/>
+</RelativeLayout>

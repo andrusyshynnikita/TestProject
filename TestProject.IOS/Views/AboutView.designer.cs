@@ -19,7 +19,11 @@ namespace TestProject.IOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.NSLayoutConstraint LogoutBottomConstraint { get; set; }
+        UIKit.NSLayoutConstraint netWork_button_constraint { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel netWork_label { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
@@ -28,9 +32,14 @@ namespace TestProject.IOS.Views
                 Logout_button = null;
             }
 
-            if (LogoutBottomConstraint != null) {
-                LogoutBottomConstraint.Dispose ();
-                LogoutBottomConstraint = null;
+            if (netWork_button_constraint != null) {
+                netWork_button_constraint.Dispose ();
+                netWork_button_constraint = null;
+            }
+
+            if (netWork_label != null) {
+                netWork_label.Dispose ();
+                netWork_label = null;
             }
         }
     }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TestProject.Core.Interface;
 using TestProject.Core.Models;
 using Xamarin.Auth;
+using Xamarin.Essentials;
 
 namespace TestProject.Core.ViewModels
 {
@@ -16,6 +17,7 @@ namespace TestProject.Core.ViewModels
         private Account _userDate;
         private TwitterUser _twitterUser;
         private OAuth1Authenticator _auth;
+        private bool _isNetChecking;
 
 
         public LoginViewModel(IMvxNavigationService mvxNavigationService, ILoginService loginService)
@@ -28,6 +30,10 @@ namespace TestProject.Core.ViewModels
             });
 
             _mvxNavigationService = mvxNavigationService;
+
+            NetCheck();
+
+            Connectivity.ConnectivityChanged += delegate { NetCheck(); };
         }
 
         public override Task Initialize()
@@ -56,16 +62,33 @@ namespace TestProject.Core.ViewModels
             }
         }
 
-        //public IMvxCommand ShowDoneList
-        //{
-        //    get
-        //    {
-        //        return new MvxAsyncCommand(async () => {
-        //            await _mvxNavigationService.Navigate<DoneListItemViewModel>();
-        //            await _mvxNavigationService.Close(this);
-        //        });
-        //    }
-        //}
+        public bool IsNetChecking
+        {
+            get
+            {
+                return _isNetChecking;
+            }
+            set
+            {
+                _isNetChecking = value;
+                RaisePropertyChanged(() => IsNetChecking);
+            }
+        }
+
+        private void NetCheck()
+        {
+            var currentNetWork = Connectivity.NetworkAccess;
+
+            if (currentNetWork == NetworkAccess.Internet)
+            {
+                IsNetChecking = true;
+            }
+
+            if (currentNetWork != NetworkAccess.Internet)
+            {
+                IsNetChecking = false;
+            }
+        }
 
     }
 }

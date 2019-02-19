@@ -1,3 +1,4 @@
+using Foundation;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using MvvmCross.Platforms.Ios.Views;
@@ -25,11 +26,14 @@ namespace TestProject.IOS.Views
             _refreshControl = new MvxUIRefreshControl();
             DoneTasksTableView.AddSubview(_refreshControl);
 
+            UIDevice.Notifications.ObserveOrientationDidChange(OrientationsHandler);
+            netWork_button_constraint.Constant = TabBarController.TabBar.Frame.Size.Height;
+
             _btnCAdd = new UIBarButtonItem(UIBarButtonSystemItem.Add, null);
             NavigationItem.SetRightBarButtonItem(_btnCAdd, false);
             NavigationController.NavigationBar.BarTintColor = UIColor.Purple;
             NavigationController.NavigationBar.TintColor = UIColor.Black;
-
+            
             var source = new TasksTableViewSource(DoneTasksTableView);
             DoneTasksTableView.Source = source;
             var set = this.CreateBindingSet<DoneListItemView, DoneListItemViewModel>();
@@ -38,8 +42,16 @@ namespace TestProject.IOS.Views
             set.Bind(_btnCAdd).For("Clicked").To(vm => vm.ShowSecondPageCommand);
             set.Bind(_refreshControl).For(r => r.IsRefreshing).To(vm => vm.IsRefreshing);
             set.Bind(_refreshControl).For(r => r.RefreshCommand).To(vm => vm.RefreshCommand);
+            set.Bind(netWork_label).For("Visibility").To(vm => vm.IsNetChecking).WithConversion("Visibility");
             set.Apply();
+
             DoneTasksTableView.ReloadData();
         }
+
+        private void OrientationsHandler(object sender, NSNotificationEventArgs e)
+        {
+            netWork_button_constraint.Constant = TabBarController.TabBar.Frame.Size.Height;
+        }
+
     }
 }

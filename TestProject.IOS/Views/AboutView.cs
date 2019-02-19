@@ -19,10 +19,12 @@ namespace TestProject.IOS.Views
         {
             base.ViewDidLoad();
 
-            LogoutBottomConstraint.Constant = TabBarController.TabBar.Frame.Size.Height;
+            netWork_button_constraint.Constant = TabBarController.TabBar.Frame.Size.Height;
             
             var set = this.CreateBindingSet<AboutView, AboutViewModel>();
             set.Bind(Logout_button).To(vm => vm.LogoutCommand);
+            set.Bind(Logout_button).For("Visibility").To(vm => vm.IsNetChecking).WithConversion("VisibilityButton");
+            set.Bind(netWork_label).For("Visibility").To(vm => vm.IsNetChecking).WithConversion("Visibility");
             set.Apply();
 
             UIDevice.Notifications.ObserveOrientationDidChange(OrientationsHandler);
@@ -35,7 +37,7 @@ namespace TestProject.IOS.Views
 
         private void OrientationsHandler(object sender, NSNotificationEventArgs e)
         {
-            LogoutBottomConstraint.Constant = TabBarController.TabBar.Frame.Size.Height;
+            netWork_button_constraint.Constant = TabBarController.TabBar.Frame.Size.Height;
         }
     }
 }

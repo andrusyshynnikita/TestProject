@@ -18,6 +18,7 @@ namespace TestProject.Core.ViewModels
         private bool _isRefreshing;
         private ILoginService _loginService;
         private IAPIService _apiService;
+        private bool _isNetChecking;
 
 
         public DoneListItemViewModel(IMvxNavigationService mvxNavigationService, ITaskService taskService, ILoginService loginService, IAPIService aPIService)
@@ -25,14 +26,22 @@ namespace TestProject.Core.ViewModels
             _apiService = aPIService;
             _navigationService = mvxNavigationService;
             _loginService = loginService;
-            ShowSecondPageCommand = new MvxAsyncCommand(async () => await _navigationService.Navigate<ItemViewModel>());
             _taskService = taskService;
+
+            ShowSecondPageCommand = new MvxAsyncCommand(async () => await _navigationService.Navigate<ItemViewModel>());
             TaskViewCommand = new MvxAsyncCommand<TaskInfo>(NavigateMethod);
+
             _apiService.OnRefresDonehDataHandler = new Action(() =>
              {
                  var items = _taskService.GetAllDoneUserTasks(TwitterUserId.Id_User);
                  TaskCollection = new MvxObservableCollection<TaskInfo>(items);
+                 IsRefreshing = false;
              });
+
+             NetCheck();
+
+            Connectivity.ConnectivityChanged += delegate { NetCheck(); };
+
         }
 
         public IMvxCommand RefreshCommand => _refreshCommand = _refreshCommand ?? new MvxCommand(DoRefresh);
@@ -41,7 +50,6 @@ namespace TestProject.Core.ViewModels
         {
             IsRefreshing = true;
             _apiService.RefreshDataAsync();
-            IsRefreshing = false;
         }
 
         public IMvxCommand ShowSecondPageCommand { get; set; }
@@ -84,14 +92,13 @@ namespace TestProject.Core.ViewModels
 
         public override void ViewAppearing()
         {
-            var current = Connectivity.NetworkAccess;
 
-            if (current == NetworkAccess.Internet)
+            if (IsNetChecking)
             {
                 _apiService.RefreshDataAsync();
             }
 
-            else
+            if(!IsNetChecking)
             {
                 var items = _taskService.GetAllDoneUserTasks(TwitterUserId.Id_User);
                 TaskCollection = new MvxObservableCollection<TaskInfo>(items);
@@ -117,6 +124,34 @@ namespace TestProject.Core.ViewModels
 
         public override void Prepare(Action parameter)
         {
+        }
+
+        public bool IsNetChecking
+        {
+            get
+            {
+                return _isNetChecking;
+            }
+            set
+            {
+                _isNetChecking = value;
+                RaisePropertyChanged(() => IsNetChecking);
+            }
+        }
+
+        private void NetCheck()
+        {
+            var currentNetWork = Connectivity.NetworkAccess;
+
+            if (currentNetWork == NetworkAccess.Internet)
+            {
+                IsNetChecking= true;
+            }
+
+            if(currentNetWork != NetworkAccess.Internet)
+            {
+                IsNetChecking = false;
+            }
         }
     }
 

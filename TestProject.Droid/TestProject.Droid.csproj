@@ -65,6 +65,8 @@
     <Compile Include="Adapters\TaskItemAdapter.cs" />
     <Compile Include="Converters\ColorValueConverter.cs" />
     <Compile Include="Converters\PlayingButtonValueConverter.cs" />
+    <Compile Include="Converters\VisibilityButtonValueConverter.cs" />
+    <Compile Include="Converters\VisibilityValueConverter.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -236,6 +238,9 @@
     </PackageReference>
     <PackageReference Include="MvvmCross.Droid.Support.V7.RecyclerView">
       <Version>6.2.2</Version>
+    </PackageReference>
+    <PackageReference Include="MvvmCross.Plugin.Visibility">
+      <Version>6.2.3</Version>
     </PackageReference>
     <PackageReference Include="Xam.Plugin.Media">
       <Version>4.0.1.5</Version>

@@ -6,30 +6,26 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using TestProject.Core.Interface;
+using Xamarin.Essentials;
 
 namespace TestProject.Core.ViewModels
 {
     public class AboutViewModel : MvxViewModel<Action>
     {
+        private bool _isNetChecking;
 
-        //private readonly IMvxNavigationService _navigationService;
-        //private ILoginService _loginService;
-
-        public AboutViewModel()//IMvxNavigationService mvxNavigationService, ILoginService loginService)
+        public AboutViewModel()
         {
-            //_navigationService = mvxNavigationService;
-            //_loginService = loginService;
+            NetCheck();
+
+            Connectivity.ConnectivityChanged += delegate { NetCheck(); };
         }
 
         public IMvxCommand LogoutCommand => new MvxCommand(LogOut);
 
         private void LogOut()
         {
-            //_loginService.Logout();
-            //await _navigationService.Navigate<LoginViewModel>();
-            //await _navigationService.Close(this);
             OnLoggedInHandler();
-           // OnLoggedInHandlerIOS();
         }
 
         public override void Prepare(Action parameter)
@@ -45,6 +41,34 @@ namespace TestProject.Core.ViewModels
         public static Action OnLoggedInHandlerIOS
         {
             get; set;
+        }
+
+        public bool IsNetChecking
+        {
+            get
+            {
+                return _isNetChecking;
+            }
+            set
+            {
+                _isNetChecking = value;
+                RaisePropertyChanged(() => IsNetChecking);
+            }
+        }
+
+        private void NetCheck()
+        {
+            var currentNetWork = Connectivity.NetworkAccess;
+
+            if (currentNetWork == NetworkAccess.Internet)
+            {
+                IsNetChecking = true;
+            }
+
+            if (currentNetWork != NetworkAccess.Internet)
+            {
+                IsNetChecking = false;
+            }
         }
     }
 }

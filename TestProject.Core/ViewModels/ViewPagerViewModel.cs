@@ -5,6 +5,7 @@ using MvvmCross.ViewModels;
 using System;
 using System.Threading.Tasks;
 using TestProject.Core.Interface;
+using Xamarin.Essentials;
 
 namespace TestProject.Core.ViewModels
 {
@@ -13,6 +14,7 @@ namespace TestProject.Core.ViewModels
         private readonly IMvxNavigationService _navigationService;
         private ILoginService _loginService;
         private IAPIService _aPIService;
+        private bool _isNetChecking;
 
         public ViewPagerViewModel(IMvxNavigationService navigationService, ILoginService loginService, IAPIService aPIService)
         {
@@ -31,7 +33,10 @@ namespace TestProject.Core.ViewModels
             ShowDoneListItemViewModelCommand = new MvxAsyncCommand<Action>(async (closeHandler) => await _navigationService.Navigate<DoneListItemViewModel, Action>(closeHandler));
             ShowNotDoneListItemViewModelCommand = new MvxAsyncCommand<Action>(async (closeHandler) => await _navigationService.Navigate<NotDoneListItemViewModel, Action>(closeHandler));
             ShowAboutViewModelCommand = new MvxAsyncCommand<Action>(async (closeHandler) => await _navigationService.Navigate<AboutViewModel, Action>(closeHandler));
-            
+
+            NetCheck();
+
+            Connectivity.ConnectivityChanged += delegate { NetCheck(); };
         }
 
         public DoneListItemViewModel DoneListItemViewModel { get; set; }
@@ -58,6 +63,34 @@ namespace TestProject.Core.ViewModels
             _loginService.Logout();
             await _navigationService.Navigate<LoginViewModel>();
             await _navigationService.Close(this);
+        }
+
+        public bool IsNetChecking
+        {
+            get
+            {
+                return _isNetChecking;
+            }
+            set
+            {
+                _isNetChecking = value;
+                RaisePropertyChanged(() => IsNetChecking);
+            }
+        }
+
+        private void NetCheck()
+        {
+            var currentNetWork = Connectivity.NetworkAccess;
+
+            if (currentNetWork == NetworkAccess.Internet)
+            {
+                IsNetChecking = true;
+            }
+
+            if (currentNetWork != NetworkAccess.Internet)
+            {
+                IsNetChecking = false;
+            }
         }
     }
 }

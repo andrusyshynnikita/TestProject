@@ -6,6 +6,7 @@ using TestProject.Core.Interface;
 using TestProject.Core.Models;
 using System;
 using TestProject.Core.Helper;
+using Xamarin.Essentials;
 
 namespace TestProject.Core.ViewModels
 {
@@ -26,6 +27,7 @@ namespace TestProject.Core.ViewModels
         private bool _playdcheck;
         private bool _playRecordEnable;
         private string _audio_File_Path;
+        private bool _isNetChecking;
 
         public override async Task Initialize()
         {
@@ -52,6 +54,10 @@ namespace TestProject.Core.ViewModels
             {
                 IsPlayRecordingEnable = true;
             });
+
+            NetCheck();
+
+            Connectivity.ConnectivityChanged += delegate { NetCheck(); };
         }
 
         public IMvxAsyncCommand CloseCommand
@@ -299,6 +305,34 @@ namespace TestProject.Core.ViewModels
             {
                 _playRecordEnable = value;
                 RaisePropertyChanged(() => IsPlayRecordingEnable);
+            }
+        }
+
+        public bool IsNetChecking
+        {
+            get
+            {
+                return _isNetChecking;
+            }
+            set
+            {
+                _isNetChecking = value;
+                RaisePropertyChanged(() => IsNetChecking);
+            }
+        }
+
+        private void NetCheck()
+        {
+            var currentNetWork = Connectivity.NetworkAccess;
+
+            if (currentNetWork == NetworkAccess.Internet)
+            {
+                IsNetChecking = true;
+            }
+
+            if (currentNetWork != NetworkAccess.Internet)
+            {
+                IsNetChecking = false;
             }
         }
 

@@ -2,6 +2,7 @@
 using System.IO;
 using Android.Content;
 using Android.Media;
+using TestProject.Core.Helper;
 using TestProject.Core.Interface;
 using TestProject.Core.Models;
 
@@ -13,11 +14,6 @@ namespace TestProject.Droid.Services
         private MediaRecorder _recorder;
         private MediaPlayer _player;
         private string path;
-        private string _initialpath = Path.Combine(System.Environment.
-               GetFolderPath(System.Environment.
-               SpecialFolder.Personal), "0" + TwitterUserId.Id_User + ".mpeg4");
-
-
 
         public AudioService()
         {
@@ -34,13 +30,13 @@ namespace TestProject.Droid.Services
         {
             try
             {
-                if (File.Exists(_initialpath))
-                    File.Delete(_initialpath);
+                if (File.Exists(Constants.INITIAL_AUDIO_FILE_PATH))
+                    File.Delete(Constants.INITIAL_AUDIO_FILE_PATH);
 
                 _recorder.SetAudioSource(AudioSource.Mic);
                 _recorder.SetOutputFormat(OutputFormat.Mpeg4);
                 _recorder.SetAudioEncoder(AudioEncoder.Aac);
-                _recorder.SetOutputFile(_initialpath);
+                _recorder.SetOutputFile(Constants.INITIAL_AUDIO_FILE_PATH);
                 _recorder.Prepare();
                 _recorder.Start();
             }
@@ -80,9 +76,9 @@ namespace TestProject.Droid.Services
                     _player.Reset();
                 }
 
-                if (File.Exists(_initialpath))
+                if (File.Exists(Constants.INITIAL_AUDIO_FILE_PATH))
                 {
-                    Java.IO.File file1 = new Java.IO.File(_initialpath);
+                    Java.IO.File file1 = new Java.IO.File(Constants.INITIAL_AUDIO_FILE_PATH);
                     Java.IO.FileInputStream fis1 = new Java.IO.FileInputStream(file1);
                     await _player.SetDataSourceAsync(fis1.FD);
                     _player.Prepare();
@@ -92,9 +88,6 @@ namespace TestProject.Droid.Services
 
                 if(path!= null)
                 {
-                    //Java.IO.File file2 = new Java.IO.File(path);
-                    //Java.IO.FileInputStream fis2 = new Java.IO.FileInputStream(file2);
-                    //if(File.Exists(file2.ToString()))
                     await _player.SetDataSourceAsync(path);
                     _player.Prepare();
                     _player.Start();
@@ -133,18 +126,18 @@ namespace TestProject.Droid.Services
             var path = Path.Combine(System.Environment.
                  GetFolderPath(System.Environment.
                  SpecialFolder.Personal), id.ToString() + TwitterUserId.Id_User + ".3gpp");
-            if (File.Exists(_initialpath))
+            if (File.Exists(Constants.INITIAL_AUDIO_FILE_PATH))
             {
                 if (File.Exists(path))
                 {
                     File.Delete(path);
-                    File.Move(_initialpath, path);
-                    File.Delete(_initialpath);
+                    File.Move(Constants.INITIAL_AUDIO_FILE_PATH, path);
+                    File.Delete(Constants.INITIAL_AUDIO_FILE_PATH);
                 }
                 else
                 {
-                    File.Move(_initialpath, path);
-                    File.Delete(_initialpath);
+                    File.Move(Constants.INITIAL_AUDIO_FILE_PATH, path);
+                    File.Delete(Constants.INITIAL_AUDIO_FILE_PATH);
                 }
             }
         }
@@ -152,7 +145,7 @@ namespace TestProject.Droid.Services
         public void DeleteNullFile()
         {
 
-            File.Delete(_initialpath);
+            File.Delete(Constants.INITIAL_AUDIO_FILE_PATH);
         }
 
         public bool CheckAudioFile(int id)

@@ -5,6 +5,7 @@ using MvvmCross.Commands;
 using TestProject.Core.Interface;
 using System.Threading.Tasks;
 using System;
+using Xamarin.Essentials;
 
 namespace TestProject.Core.ViewModels
 {
@@ -17,6 +18,7 @@ namespace TestProject.Core.ViewModels
         private bool _isRefreshing;
         private ILoginService _loginService;
         private IAPIService _apiService;
+        private bool _isNetChecking;
 
         public NotDoneListItemViewModel(IMvxNavigationService mvxNavigationService, ITaskService taskService, ILoginService loginService, IAPIService aPIService)
         {
@@ -24,6 +26,7 @@ namespace TestProject.Core.ViewModels
             _navigationService = mvxNavigationService;
             _loginService = loginService;
             _taskService = taskService;
+
             ShowSecondPageCommand = new MvxAsyncCommand(async () => await _navigationService.Navigate<ItemViewModel>());
             TaskViewCommand = new MvxAsyncCommand<TaskInfo>(NavigateMethod);
 
@@ -31,6 +34,10 @@ namespace TestProject.Core.ViewModels
             {
                 DoRefresh();
             });
+
+            NetCheck();
+
+            Connectivity.ConnectivityChanged += delegate { NetCheck(); };
 
         }
 
@@ -98,6 +105,34 @@ namespace TestProject.Core.ViewModels
 
         public override void Prepare(Action parameter)
         {
+        }
+
+        public bool IsNetChecking
+        {
+            get
+            {
+                return _isNetChecking;
+            }
+            set
+            {
+                _isNetChecking = value;
+                RaisePropertyChanged(() => IsNetChecking);
+            }
+        }
+
+        private void NetCheck()
+        {
+            var currentNetWork = Connectivity.NetworkAccess;
+
+            if (currentNetWork == NetworkAccess.Internet)
+            {
+                IsNetChecking = true;
+            }
+
+            if (currentNetWork != NetworkAccess.Internet)
+            {
+                IsNetChecking = false;
+            }
         }
     }
 

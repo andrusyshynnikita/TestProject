@@ -9,6 +9,8 @@
             <connections>
                 <outlet property="view" destination="2" id="RRd-Eg-VrN"/>
                 <outlet property="DoneTasksTableView" destination="309" id="name-outlet-309"/>
+                <outlet property="netWork_label" destination="3678" id="name-outlet-3678"/>
+                <outlet property="netWork_button_constraint" destination="3958" id="name-outlet-3958"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -20,12 +22,25 @@
                     <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                     <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                 </tableView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3678" translatesAutoresizingMaskIntoConstraints="NO" text="No NetWork Access" misplaced="YES">
+                    <rect key="frame" x="108" y="714" width="198" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                    <color key="backgroundColor" colorSpace="calibratedRGB" red="1" green="0" blue="0" alpha="1"/>
+                    <constraints>
+                        <constraint id="3959" firstAttribute="height" constant="20"/>
+                    </constraints>
+                </label>
             </subviews>
             <constraints>
                 <constraint id="2964" firstItem="309" firstAttribute="leading" secondItem="2" secondAttribute="leading"/>
-                <constraint id="2979" firstItem="309" firstAttribute="bottom" secondItem="2" secondAttribute="bottom"/>
                 <constraint id="2994" firstItem="309" firstAttribute="trailing" secondItem="2" secondAttribute="trailing"/>
                 <constraint id="3252" firstItem="309" firstAttribute="top" secondItem="2" secondAttribute="top"/>
+                <constraint id="3677" firstAttribute="bottom" secondItem="309" secondAttribute="bottom"/>
+                <constraint id="3956" firstItem="309" firstAttribute="trailing" secondItem="3678" secondAttribute="trailing"/>
+                <constraint id="3957" firstItem="3678" firstAttribute="leading" secondItem="309" secondAttribute="leading"/>
+                <constraint id="3958" firstItem="309" firstAttribute="bottom" secondItem="3678" secondAttribute="bottom"/>
             </constraints>
             <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
             <color key="tintColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>

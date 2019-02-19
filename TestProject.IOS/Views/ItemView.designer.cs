@@ -27,6 +27,10 @@ namespace TestProject.IOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel netWork_label { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIButton Play { get; set; }
 
         [Outlet]
@@ -64,6 +68,11 @@ namespace TestProject.IOS.Views
             if (MainUIView != null) {
                 MainUIView.Dispose ();
                 MainUIView = null;
+            }
+
+            if (netWork_label != null) {
+                netWork_label.Dispose ();
+                netWork_label = null;
             }
 
             if (Play != null) {
