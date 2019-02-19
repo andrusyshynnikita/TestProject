@@ -11,31 +11,28 @@ namespace TestProject.IOS.Services
 {
     public class AudioService : IAudioService
     {
-        private AVAudioRecorder _audioRecorder=null;
+        private AVAudioRecorder _audioRecorder = null;
         private AVAudioPlayer _audioPlayer;
         private NSUrl _url;
         private NSError _error;
 
-        public Action OnRecordHandler { get; set; }
-        public Action OnPlaydHandler { get; set; }
+        public Action OnPlaydStatusHandler { get; set; }
 
         public AudioService()
         {
         }
 
-        public bool CheckAudioFile(int id)
+        public void StartRecording(int id)
         {
-            var path = Path.Combine(System.Environment.
-                GetFolderPath(System.Environment.
-                SpecialFolder.Personal), id.ToString() + TwitterUserId.Id_User + ".3gpp");
-            var result = File.Exists(path);
-
-            return result;
+            if (PrepareAudioRecording())
+            {
+                _audioRecorder.Record();
+            }
         }
 
-        public void DeleteNullFile()
+        public void StopRecording()
         {
-            File.Delete(Constants.INITIAL_AUDIO_FILE_PATH);
+            _audioRecorder.Stop();
         }
 
         public void PlayRecording(string path)
@@ -55,7 +52,7 @@ namespace TestProject.IOS.Services
 
             }
 
-            if(File.Exists(path))
+            if (File.Exists(path))
             {
                 try
                 {
@@ -64,12 +61,12 @@ namespace TestProject.IOS.Services
                     _audioPlayer = AVAudioPlayer.FromUrl(_url);
                     _audioPlayer.Play();
                     _audioPlayer.FinishedPlaying += PlayCompletion;
-                    
+
                 }
 
-                catch(Exception e)
+                catch (Exception e)
                 {
-                    Console.WriteLine(e.Message); 
+                    Console.WriteLine(e.Message);
                 }
             }
         }
@@ -77,7 +74,7 @@ namespace TestProject.IOS.Services
         private void PlayCompletion(object sender, AVStatusEventArgs e)
         {
             _audioPlayer = null;
-            OnPlaydHandler();
+            OnPlaydStatusHandler();
         }
 
         public void StopPlayRecording()
@@ -93,42 +90,12 @@ namespace TestProject.IOS.Services
             }
         }
 
-        public void RenameFile(int id)
+        public void DeleteInitialFile()
         {
-            var path = Path.Combine(System.Environment.
-                 GetFolderPath(System.Environment.
-                 SpecialFolder.Personal), id.ToString() + TwitterUserId.Id_User + ".3gpp");
-            if (File.Exists(Constants.INITIAL_AUDIO_FILE_PATH))
-            {
-                if (File.Exists(path))
-                {
-                    File.Delete(path);
-                    File.Move(Constants.INITIAL_AUDIO_FILE_PATH, path);
-                    File.Delete(Constants.INITIAL_AUDIO_FILE_PATH);
-                }
-                else
-                {
-                    File.Move(Constants.INITIAL_AUDIO_FILE_PATH, path);
-                    File.Delete(Constants.INITIAL_AUDIO_FILE_PATH);
-                }
-            }
+            File.Delete(Constants.INITIAL_AUDIO_FILE_PATH);
         }
 
-        public void StartRecording(int id)
-        {
-            if (PrepareAudioRecording())
-            {
-                _audioRecorder.Record();
-            }
-        }
-
-        public void StopRecording()
-        {
-            _audioRecorder.Stop();
-            OnRecordHandler();
-        }
-
-        bool PrepareAudioRecording()
+        private bool PrepareAudioRecording()
         {
 
             var audioSession = AVAudioSession.SharedInstance();
@@ -182,7 +149,8 @@ namespace TestProject.IOS.Services
                 return false;
             }
 
-            _audioRecorder.FinishedRecording += delegate (object sender, AVStatusEventArgs e) {
+            _audioRecorder.FinishedRecording += delegate (object sender, AVStatusEventArgs e)
+            {
                 _audioRecorder.Dispose();
                 _audioRecorder = null;
                 Console.WriteLine("Done Recording (status: {0})", e.Status);

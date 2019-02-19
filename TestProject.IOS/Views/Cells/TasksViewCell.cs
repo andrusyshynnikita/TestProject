@@ -24,7 +24,7 @@ namespace TestProject.IOS.Views.Cells
             {
                 var set = this.CreateBindingSet<TasksViewCell, TaskInfo>();
                 set.Bind(TitleTask).To(m => m.Title);
-                set.Bind(StatusTask).For(v => v.Image).To(vm => vm.Status).WithConversion("Icon");
+                set.Bind(StatusTask).For(v => v.Image).To(vm => vm.Status).WithConversion("StatusToImage");
                 set.Apply();
             });
         }

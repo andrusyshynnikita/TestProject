@@ -51,21 +51,9 @@ namespace TestProject.Core.services
 
                 _twitterUser = JsonConvert.DeserializeObject<TwitterUser>(json);
                 CrossSettings.Current.AddOrUpdateValue("Twitter", _twitterUser.id_str);
-                // _currentUserAccount = AccountStore.Create().FindAccountsForService("Twitter").FirstOrDefault();
-                // _currentUserAccount.Username = _twitterUser.name;
-                TwitterUserId.Id_User = _twitterUser.id_str;
                 OnLoggedInHandler();
             }
 
-        }
-
-        public Account CurrentUserAccount
-        {
-            get
-            {
-                return _currentUserAccount = AccountStore.Create().FindAccountsForService("Twitter").FirstOrDefault();
-            }
-            set { }
         }
 
         public void Logout()
@@ -75,7 +63,6 @@ namespace TestProject.Core.services
             if (data == true)
             {
                 CrossSettings.Current.Clear();
-                TwitterUserId.Id_User = null;
             }
         }
 

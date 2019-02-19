@@ -10,7 +10,7 @@ using UIKit;
 
 namespace TestProject.IOS.Converters
 {
-   public class IconValueConverter : MvxValueConverter<bool>
+   public class StatusToImageValueConverter : MvxValueConverter<bool>
     {
         protected override object Convert(bool value, Type targetType, object parameter, CultureInfo culture)
         {

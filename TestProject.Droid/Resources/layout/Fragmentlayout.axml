@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
 	android:orientation="vertical"
 	android:gravity="center|bottom">
-	
 	<Button
 		android:id="@+id/button1"
 		android:text="Logout"
@@ -15,5 +14,5 @@
 		android:layout_height="wrap_content"
 		android:layout_gravity="bottom"
 		android:background="#87ceeb"
-		local:MvxBind="Click LogoutCommand;Visibility VisibilityButton(IsNetChecking)"/>
+		local:MvxBind="Click LogoutCommand;Visibility Visibility(IsNetChecking)"/>
 </LinearLayout>

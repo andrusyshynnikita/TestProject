@@ -8,19 +8,23 @@ using UIKit;
 namespace TestProject.IOS.Views
 {
     [MvxRootPresentation(WrapInNavigationController =false)]
-    public class TabBarView : MvxTabBarViewController<ViewPagerViewModel>
+    public class TasksContainerView : MvxTabBarViewController<TasksContainerViewModel>
     {
+        #region Variables
         private bool _firstTimePresented = true;
+        #endregion
 
-        public TabBarView()
+        #region Constructors
+        public TasksContainerView()
         {
         }
+        #endregion
 
+        #region LifeCycle
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
         }
-
 
         public override void ViewWillAppear(bool animated)
         {
@@ -37,7 +41,7 @@ namespace TestProject.IOS.Views
                 UITextAttributes txtAttributes = new UITextAttributes
                 {
                     Font = UIFont.FromName("HelveticaNeue-Light", 16),
-                    
+
                 };
 
                 for (int i = 0; i < ChildViewControllers.Length; i++)
@@ -48,5 +52,6 @@ namespace TestProject.IOS.Views
                 }
             }
         }
+        #endregion
     }
 }

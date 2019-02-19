@@ -6,11 +6,14 @@ using TestProject.Core.Interface;
 using System.Threading.Tasks;
 using System;
 using Xamarin.Essentials;
+using System.Collections.Generic;
+using TestProject.Core.Helper;
 
 namespace TestProject.Core.ViewModels
 {
-    public class DoneListItemViewModel : MvxViewModel<Action>
+    public class DoneListItemViewModel : BaseViewModel<Action>
     {
+        #region Variables
         private readonly IMvxNavigationService _navigationService;
         private MvxObservableCollection<TaskInfo> _taskCollection;
         private ITaskService _taskService;
@@ -19,8 +22,9 @@ namespace TestProject.Core.ViewModels
         private ILoginService _loginService;
         private IAPIService _apiService;
         private bool _isNetChecking;
+        #endregion
 
-
+        #region Constructors
         public DoneListItemViewModel(IMvxNavigationService mvxNavigationService, ITaskService taskService, ILoginService loginService, IAPIService aPIService)
         {
             _apiService = aPIService;
@@ -29,28 +33,26 @@ namespace TestProject.Core.ViewModels
             _taskService = taskService;
 
             ShowSecondPageCommand = new MvxAsyncCommand(async () => await _navigationService.Navigate<ItemViewModel>());
-            TaskViewCommand = new MvxAsyncCommand<TaskInfo>(NavigateMethod);
+            TaskViewCommand = new MvxAsyncCommand<TaskInfo>(TransferTaskInfo);
 
-            _apiService.OnRefresDonehDataHandler = new Action(() =>
-             {
-                 var items = _taskService.GetAllDoneUserTasks(TwitterUserId.Id_User);
-                 TaskCollection = new MvxObservableCollection<TaskInfo>(items);
-                 IsRefreshing = false;
-             });
-
-             NetCheck();
-
-            Connectivity.ConnectivityChanged += delegate { NetCheck(); };
-
+            base.NetChecking();
+            Connectivity.ConnectivityChanged += delegate { base.NetChecking(); };
         }
+        #endregion
 
-        public IMvxCommand RefreshCommand => _refreshCommand = _refreshCommand ?? new MvxCommand(DoRefresh);
-
-        private void DoRefresh()
+        #region LifeCycle
+        public override void Prepare(Action parameter)
         {
-            IsRefreshing = true;
-            _apiService.RefreshDataAsync();
         }
+
+        public override void ViewAppearing()
+        {
+            RefreshCurrentTasksData();
+        }
+        #endregion
+
+        #region Commands
+        public IMvxCommand RefreshCommand => _refreshCommand = _refreshCommand ?? new MvxCommand(RefreshCurrentTasksData);
 
         public IMvxCommand ShowSecondPageCommand { get; set; }
 
@@ -63,20 +65,9 @@ namespace TestProject.Core.ViewModels
                 return new MvxAsyncCommand(LogOut);
             }
         }
+        #endregion
 
-        private async Task NavigateMethod(TaskInfo taskInfo)
-        {
-            try
-            {
-                var result = await _navigationService.Navigate<ItemViewModel, TaskInfo>(taskInfo);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-        }
-
+        #region Properties
         public MvxObservableCollection<TaskInfo> TaskCollection
         {
             get
@@ -90,21 +81,6 @@ namespace TestProject.Core.ViewModels
             }
         }
 
-        public override void ViewAppearing()
-        {
-
-            if (IsNetChecking)
-            {
-                _apiService.RefreshDataAsync();
-            }
-
-            if(!IsNetChecking)
-            {
-                var items = _taskService.GetAllDoneUserTasks(TwitterUserId.Id_User);
-                TaskCollection = new MvxObservableCollection<TaskInfo>(items);
-            }
-        }
-
         public bool IsRefreshing
         {
             get { return _isRefreshing; }
@@ -112,6 +88,36 @@ namespace TestProject.Core.ViewModels
             {
                 _isRefreshing = value;
                 RaisePropertyChanged(() => IsRefreshing);
+            }
+        }
+        #endregion
+
+        #region Methods
+        private async Task TransferTaskInfo(TaskInfo taskInfo)
+        {
+            try
+            {
+                var result = await _navigationService.Navigate<ItemViewModel, TaskInfo>(taskInfo);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private async void RefreshCurrentTasksData()
+        {
+            if (base.IsNetChecking == true)
+            {
+                IsRefreshing = true;
+               await _apiService.RefreshDataAsync();
+                UploadTasksData();
+            }
+
+            if (base.IsNetChecking == false)
+            {
+                IsRefreshing = true;
+                UploadTasksData();
             }
         }
 
@@ -122,37 +128,29 @@ namespace TestProject.Core.ViewModels
             await _navigationService.Close(this);
         }
 
-        public override void Prepare(Action parameter)
+        private void UploadTasksData()
         {
+            var items = _taskService.GetAllDoneUserTasks(UserAccount.GetUserId());
+            TaskCollection = new MvxObservableCollection<TaskInfo>(items);
+            IsRefreshing = false;
         }
+        #endregion
 
-        public bool IsNetChecking
-        {
-            get
-            {
-                return _isNetChecking;
-            }
-            set
-            {
-                _isNetChecking = value;
-                RaisePropertyChanged(() => IsNetChecking);
-            }
-        }
 
-        private void NetCheck()
-        {
-            var currentNetWork = Connectivity.NetworkAccess;
 
-            if (currentNetWork == NetworkAccess.Internet)
-            {
-                IsNetChecking= true;
-            }
 
-            if(currentNetWork != NetworkAccess.Internet)
-            {
-                IsNetChecking = false;
-            }
-        }
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
 }

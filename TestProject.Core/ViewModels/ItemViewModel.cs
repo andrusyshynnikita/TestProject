@@ -10,8 +10,9 @@ using Xamarin.Essentials;
 
 namespace TestProject.Core.ViewModels
 {
-    public class ItemViewModel : MvxViewModel<TaskInfo>
+    public class ItemViewModel : BaseViewModel<TaskInfo>
     {
+        #region Variables
         private readonly IMvxNavigationService _navigationService;
         private readonly ITaskService _taskService;
         private readonly IAudioService _audioService;
@@ -20,51 +21,101 @@ namespace TestProject.Core.ViewModels
         private string _title;
         private string _description;
         private bool _status;
+        private string _audio_File_Path;
         private bool _titleEnableStatus;
         private bool _saveTaskEnable;
         private bool _deleteTaskEnable;
         private bool _recordcheck;
         private bool _playdcheck;
         private bool _playRecordEnable;
-        private string _audio_File_Path;
         private bool _isNetChecking;
+        #endregion
 
-        public override async Task Initialize()
-        {
-            await base.Initialize();
-
-        }
-
+        #region Constructors
         public ItemViewModel(IMvxNavigationService mvxNavigationService, ITaskService taskService, IAudioService audioService, IAPIService apiService)
         {
             _taskService = taskService;
             _navigationService = mvxNavigationService;
             _audioService = audioService;
             _apiService = apiService;
-            IsPlayRecordingEnable = false;
+            PermissionToPlay = false;
             IsREcordChecking = true;
             IsPlayChecking = true;
 
-            _audioService.OnPlaydHandler = new Action(() =>
+            _audioService.OnPlaydStatusHandler = new Action(() =>
             {
                 IsPlayChecking = true;
             });
 
-            _audioService.OnRecordHandler = new Action(() =>
-            {
-                IsPlayRecordingEnable = true;
-            });
+            NetChecking();
 
-            NetCheck();
+            Connectivity.ConnectivityChanged += delegate { NetChecking(); };
+        }
+        #endregion
 
-            Connectivity.ConnectivityChanged += delegate { NetCheck(); };
+        #region LifeCycle
+        public override void Prepare()
+        {
+            base.Prepare();
         }
 
+        public override void Prepare(TaskInfo _taskInfo)
+        {
+            Id = _taskInfo.Id;
+            Title = _taskInfo.Title;
+            Description = _taskInfo.Description;
+            Status = _taskInfo.Status;
+            AudioFileName = _taskInfo.AudioFilePath;
+
+
+            if (AudioFileName != null)
+            {
+                _apiService.DownloadAudioFile(Id, AudioFileName);
+                PermissionToPlay = true;
+            }
+            else
+            {
+                PermissionToPlay = false;
+            }
+
+        }
+
+        public override async Task Initialize()
+        {
+            await base.Initialize();
+
+        }
+        #endregion
+
+        #region Commands
         public IMvxAsyncCommand CloseCommand
         {
             get { return new MvxAsyncCommand(CloseTask); }
         }
 
+        public IMvxCommand SaveCommand
+        {
+            get { return new MvxCommand(SaveTask); }
+
+        }
+
+        public IMvxCommand DeleteCommand
+        {
+            get { return new MvxCommand(DeleteTask); }
+        }
+
+        public IMvxCommand StartRecordingCommand
+        {
+            get { return new MvxCommand(StartRecording); }
+        }
+
+        public IMvxCommand PlayRecordingCommand
+        {
+            get { return new MvxCommand(PlayRecording); }
+        }
+        #endregion
+
+        #region Properties
         public int Id
         {
             get
@@ -115,113 +166,6 @@ namespace TestProject.Core.ViewModels
         }
 
         public string AudioFileName { get; set; }
-
-        public IMvxCommand SaveCommand
-        {
-            get { return new MvxCommand(SaveTask); }
-
-        }
-
-        public IMvxCommand DeleteCommand
-        {
-            get { return new MvxCommand(DeleteTask); }
-        }
-
-        public IMvxCommand StartRecordingCommand
-        {
-            get { return new MvxCommand(StartRecording); }
-        }
-
-        public IMvxCommand PlayRecordingCommand
-        {
-            get { return new MvxCommand(PlayRecording); }
-        }
-
-        private void PlayRecording()
-        {
-            if (AudioFileName != null)
-            {
-                _audio_File_Path = Constants.AUDIO_FILE_PATH(AudioFileName);
-            }
-
-            if (IsPlayChecking == true)
-            {
-                IsPlayChecking = false;
-                _audioService.PlayRecording(_audio_File_Path);
-
-            }
-
-            else
-            {
-                _audioService.StopPlayRecording();
-                IsPlayChecking = true;
-            }
-        }
-
-        private void StartRecording()
-        {
-            if (IsREcordChecking == true)
-            {
-                _audioService.StartRecording(Id);
-                IsREcordChecking = false;
-            }
-            else
-            {
-                _audioService.StopRecording();
-                IsREcordChecking = true;
-            }
-        }
-
-        private async Task CloseTask()
-        {
-            _audioService.DeleteNullFile();
-            await _navigationService.Close(this);
-        }
-
-        private async void SaveTask()
-        {
-            TaskInfo taskInfo = new TaskInfo(Id, TwitterUserId.Id_User, Title, Description, Status, AudioFileName);
-            if (Title != null)
-            {
-                await _apiService.InsertOrUpdateTaskAsync(taskInfo);
-            }
-
-            await _navigationService.Close(this);
-        }
-
-        private async void DeleteTask()
-        {
-
-            await _apiService.DeleteTaskAsync(new TaskInfo(Id, TwitterUserId.Id_User, Title, Description, Status, AudioFileName));
-
-            await _navigationService.Close(this);
-        }
-
-        public override void Prepare()
-        {
-            base.Prepare();
-        }
-
-        public override void Prepare(TaskInfo _taskInfo)
-        {
-            Id = _taskInfo.Id;
-            Title = _taskInfo.Title;
-            Description = _taskInfo.Description;
-            Status = _taskInfo.Status;
-            AudioFileName = _taskInfo.AudioFilePath;
-
-
-            if (AudioFileName != null)
-            {
-                _apiService.DownloadAudioFile(Id, AudioFileName);
-                IsPlayRecordingEnable = true;
-            }
-            else
-            {
-                IsPlayRecordingEnable = false;
-            }
-
-        }
 
         public bool IsTitleEnable
         {
@@ -294,7 +238,7 @@ namespace TestProject.Core.ViewModels
             }
         }
 
-        public bool IsPlayRecordingEnable
+        public bool PermissionToPlay
         {
             get
             {
@@ -304,37 +248,72 @@ namespace TestProject.Core.ViewModels
             set
             {
                 _playRecordEnable = value;
-                RaisePropertyChanged(() => IsPlayRecordingEnable);
+                RaisePropertyChanged(() => PermissionToPlay);
             }
         }
+        #endregion
 
-        public bool IsNetChecking
+        #region Methods
+        private void PlayRecording()
         {
-            get
+            if (AudioFileName != null)
             {
-                return _isNetChecking;
+                _audio_File_Path = Constants.AUDIO_FILE_PATH(AudioFileName);
             }
-            set
+
+            if (IsPlayChecking == true)
             {
-                _isNetChecking = value;
-                RaisePropertyChanged(() => IsNetChecking);
+                IsPlayChecking = false;
+                _audioService.PlayRecording(_audio_File_Path);
+
+            }
+
+            else
+            {
+                _audioService.StopPlayRecording();
+                IsPlayChecking = true;
             }
         }
 
-        private void NetCheck()
+        private void StartRecording()
         {
-            var currentNetWork = Connectivity.NetworkAccess;
-
-            if (currentNetWork == NetworkAccess.Internet)
+            if (IsREcordChecking == true)
             {
-                IsNetChecking = true;
+                _audioService.StartRecording(Id);
+                IsREcordChecking = false;
             }
-
-            if (currentNetWork != NetworkAccess.Internet)
+            else
             {
-                IsNetChecking = false;
+                _audioService.StopRecording();
+                PermissionToPlay = true;
+                IsREcordChecking = true;
             }
         }
 
+        private async Task CloseTask()
+        {
+            _audioService.DeleteInitialFile();
+            await _navigationService.Close(this);
+        }
+
+        private async void SaveTask()
+        {
+            TaskInfo taskInfo = new TaskInfo(Id, UserAccount.GetUserId(), Title, Description, Status, AudioFileName);
+            if (Title != null)
+            {
+                await _apiService.InsertOrUpdateTaskAsync(taskInfo);
+            }
+
+            await _navigationService.Close(this);
+        }
+
+        private async void DeleteTask()
+        {
+
+            await _apiService.DeleteTaskAsync(new TaskInfo(Id, UserAccount.GetUserId(), Title, Description, Status, AudioFileName));
+
+            await _navigationService.Close(this);
+        }
+        #endregion
     }
 }

@@ -15,18 +15,20 @@ namespace TestProject.Droid
     [Register("TestProject.droid.view.DoneListItemView")]
     public class NotDoneListItemView : BaseFragment<NotDoneListItemViewModel>
     {
+        #region Variables
         private Toolbar _mToolbar;
         private RecyclerView.LayoutManager _layoutManager;
         private TasksItemAdapter _mAdapter;
         private MvxRecyclerView _recyclerView;
+        #endregion
 
+        #region Constructors
         public NotDoneListItemView()
         {
-
         }
+        #endregion
 
-        protected override int FragmentId => Resource.Layout.DoneListItemsLayout;
-
+        #region LifeCycle
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             var view = base.OnCreateView(inflater, container, savedInstanceState);
@@ -40,7 +42,10 @@ namespace TestProject.Droid
             _recyclerView.Adapter = _mAdapter;
             return view;
         }
+        #endregion
 
-
+        #region Properties
+        protected override int FragmentId => Resource.Layout.DoneListItemsLayout;
+        #endregion    
     }
 }

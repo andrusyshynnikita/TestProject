@@ -73,7 +73,7 @@
 		android:orientation="horizontal"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		local:MvxBind = "Visibility VisibilityButton(IsNetChecking)"
+		local:MvxBind = "Visibility Visibility(IsNetChecking)"
 		android:layout_marginTop="15dp">
 		<Button
 			android:id = "@+id/Savetask"
@@ -120,13 +120,13 @@
 			android:layout_marginLeft="10dp"
 			android:textOff="Record"
 			android:textOn="Stop"
-			local:MvxBind = " BackgroundColor Color(IsREcordChecking)"/>
+			local:MvxBind = " BackgroundColor StatusToColor(IsREcordChecking)"/>
 			<ToggleButton
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_weight="10"
 			android:layout_marginLeft="5dp"
-			local:MvxBind = "Click PlayRecordingCommand; BackgroundColor Color(IsPlayChecking); Text PlayingButton(IsPlayChecking); Enabled IsPlayRecordingEnable"/>
+			local:MvxBind = "Click PlayRecordingCommand; BackgroundColor StatusToColor(IsPlayChecking); Text StatusToTitlePlayButton(IsPlayChecking); Enabled PermissionToPlay"/>
 	</LinearLayout>
 	</LinearLayout>
 </ScrollView>
@@ -137,5 +137,5 @@
 		android:gravity = "center"
 	    android:background = "#FF0000"
 		android:layout_alignParentBottom = "true"
-		local:MvxBind="Visibility Visibility(IsNetChecking)"/>
+		local:MvxBind="Visibility ReverseVisibility(IsNetChecking)"/>
 </RelativeLayout>

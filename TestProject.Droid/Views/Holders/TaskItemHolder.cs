@@ -1,7 +1,4 @@
-﻿using System;
-using Android.Content.Res;
-using Android.Graphics;
-using Android.Views;
+﻿using Android.Views;
 using Android.Widget;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Droid.Support.V7.RecyclerView;

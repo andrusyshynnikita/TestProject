@@ -14,12 +14,12 @@
 		android:layout_gravity="center"
 		android:layout_marginTop="150dp"
 		android:background="#87ceeb"
-	local:MvxBind = "Visibility VisibilityButton(IsNetChecking)"/>
+	local:MvxBind = "Visibility Visibility(IsNetChecking)"/>
 <LinearLayout
 		android:layout_width="match_parent"
         android:layout_height="match_parent"
 		android:gravity = "bottom"
-		local:MvxBind = "Visibility Visibility(IsNetChecking)">
+		local:MvxBind = "Visibility ReverseVisibility(IsNetChecking)">
 	<TextView
 		android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -10,15 +10,7 @@ namespace TestProject.Droid.Views
 {
     public abstract class BaseFragment : MvxFragment
     {
-
-        public MvxAppCompatActivity ParentActivity
-        {
-            get
-            {
-                return (MvxAppCompatActivity)Activity;
-            }
-        }
-
+        #region LifeCycle
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             var ignore = base.OnCreateView(inflater, container, savedInstanceState);
@@ -28,17 +20,30 @@ namespace TestProject.Droid.Views
             return view;
         }
 
-        protected abstract int FragmentId { get; }
-
-        public override void OnConfigurationChanged(Configuration newConfig)
-        {
-            base.OnConfigurationChanged(newConfig);
-        }
-
         public override void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
         }
+        #endregion
+
+        #region Properties
+        public MvxAppCompatActivity ParentActivity
+        {
+            get
+            {
+                return (MvxAppCompatActivity)Activity;
+            }
+        }
+
+        protected abstract int FragmentId { get; }
+        #endregion
+
+        #region Methods
+        public override void OnConfigurationChanged(Configuration newConfig)
+        {
+            base.OnConfigurationChanged(newConfig);
+        }
+        #endregion
     }
 
     public abstract class BaseFragment<TViewModel> : BaseFragment where TViewModel : class, IMvxViewModel

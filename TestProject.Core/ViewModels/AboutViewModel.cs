@@ -1,74 +1,51 @@
 ﻿using MvvmCross.Commands;
-using MvvmCross.Navigation;
-using MvvmCross.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using TestProject.Core.Interface;
 using Xamarin.Essentials;
 
 namespace TestProject.Core.ViewModels
 {
-    public class AboutViewModel : MvxViewModel<Action>
+    public class AboutViewModel : BaseViewModel<Action>
     {
+        #region Variables
         private bool _isNetChecking;
+        #endregion
 
+        #region Constructors
         public AboutViewModel()
         {
-            NetCheck();
+            NetChecking();
 
-            Connectivity.ConnectivityChanged += delegate { NetCheck(); };
+            Connectivity.ConnectivityChanged += delegate { NetChecking(); };
         }
+        #endregion
 
-        public IMvxCommand LogoutCommand => new MvxCommand(LogOut);
-
-        private void LogOut()
-        {
-            OnLoggedInHandler();
-        }
-
+        #region LifeCycle
         public override void Prepare(Action parameter)
         {
             OnLoggedInHandler = parameter;
         }
+        #endregion
 
+        #region Commands
+        public IMvxCommand LogoutCommand => new MvxCommand(LogOut);
+        #endregion
+
+        #region Properties
         public Action OnLoggedInHandler
         {
             get; set;
         }
-
         public static Action OnLoggedInHandlerIOS
         {
             get; set;
         }
+        #endregion
 
-        public bool IsNetChecking
+        #region Methods
+        private void LogOut()
         {
-            get
-            {
-                return _isNetChecking;
-            }
-            set
-            {
-                _isNetChecking = value;
-                RaisePropertyChanged(() => IsNetChecking);
-            }
+            OnLoggedInHandler();
         }
-
-        private void NetCheck()
-        {
-            var currentNetWork = Connectivity.NetworkAccess;
-
-            if (currentNetWork == NetworkAccess.Internet)
-            {
-                IsNetChecking = true;
-            }
-
-            if (currentNetWork != NetworkAccess.Internet)
-            {
-                IsNetChecking = false;
-            }
-        }
+        #endregion
     }
 }

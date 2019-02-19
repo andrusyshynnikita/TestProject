@@ -9,12 +9,9 @@ namespace TestProject.Core.Interface
     {
         void StartRecording(int id);
         void StopRecording();
-        void PlayRecording(string path); //android use return Task
+        void PlayRecording(string path); 
         void StopPlayRecording();
-        void RenameFile(int newName);
-        bool CheckAudioFile(int id);
-        void DeleteNullFile();
-        Action OnRecordHandler { get; set; }
-        Action OnPlaydHandler { get; set; }
+        void DeleteInitialFile();
+        Action OnPlaydStatusHandler { get; set; }
     }
 }

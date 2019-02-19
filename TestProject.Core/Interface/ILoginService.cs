@@ -13,6 +13,5 @@ namespace TestProject.Core.Interface
         Action OnLoggedInHandler { get; set; }
         OAuth1Authenticator Authenticator();
         void Logout();
-        Account CurrentUserAccount { get; set; }
     }
 }

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using MvvmCross.Converters;
+using System;
 using System.Globalization;
-using MvvmCross.Converters;
 
-namespace TestProject.Droid.Converters
+namespace TestProject.Core.Converters
 {
-    public class PlayingButtonValueConverter : MvxValueConverter<bool>
+    public class StatusToTitlePlayButtonValueConverter : MvxValueConverter<bool>
 
     {
         protected override object Convert(bool value, Type targetType, object parameter, CultureInfo culture)

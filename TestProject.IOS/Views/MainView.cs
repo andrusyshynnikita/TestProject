@@ -7,16 +7,20 @@ namespace StarWarsSample.iOS.Views
     [MvxRootPresentation]
     public class MainView : MvxViewController<MainViewModel>
     {
+        #region Variables
         private bool _firstTimePresented = true;
+        #endregion
 
+        #region Constructors
         public MainView()
         {
         }
+        #endregion
 
+        #region LifeCycle
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-
         }
 
         public override void ViewDidAppear(bool animated)
@@ -30,5 +34,6 @@ namespace StarWarsSample.iOS.Views
 
             }
         }
+        #endregion
     }
 }

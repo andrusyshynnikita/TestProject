@@ -1,6 +1,4 @@
-﻿using System;
-using MvvmCross;
-using MvvmCross.ViewModels;
+﻿using MvvmCross.ViewModels;
 using MvvmCross.IoC;
 
 

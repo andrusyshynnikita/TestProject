@@ -8,10 +8,8 @@ namespace TestProject.Core.Interface
 {
    public interface IAPIService
     {
-        Task<bool> RefreshDataAsync();
+        Task RefreshDataAsync();
         Task InsertOrUpdateTaskAsync(TaskInfo item);
-        Action OnRefresDonehDataHandler { get; set; }
-        Action OnRefresNotDonehDataHandler { get; set; }
         Task DeleteTaskAsync(TaskInfo item);
         Task DownloadAudioFile(int id, string path);
     }

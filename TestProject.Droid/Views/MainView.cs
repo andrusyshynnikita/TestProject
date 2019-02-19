@@ -10,6 +10,7 @@ namespace TestProject.Droid.Views
     [Activity]
     public class MainView : MvxAppCompatActivity<MainViewModel>
     {
+        #region LifeCicle
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -20,5 +21,6 @@ namespace TestProject.Droid.Views
                 ViewModel.ShowCurrentViewModelCommand.Execute(null);
             }
         }
+        #endregion
     }
 }

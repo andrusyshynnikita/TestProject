@@ -15,6 +15,8 @@ namespace TestProject.Droid.Services
         private MediaPlayer _player;
         private string path;
 
+        public Action OnPlaydStatusHandler { get; set; }
+
         public AudioService()
         {
             _recorder = new MediaRecorder();
@@ -53,7 +55,6 @@ namespace TestProject.Droid.Services
             {
                 _recorder.Stop();
                 _recorder.Reset();
-                OnRecordHandler();
             }
 
             catch (Exception e)
@@ -93,7 +94,6 @@ namespace TestProject.Droid.Services
                     _player.Start();
                     _player.Completion += PlayCompletion;
                 }
-
             }
 
             catch (Exception ex)
@@ -105,7 +105,7 @@ namespace TestProject.Droid.Services
 
         private void PlayCompletion(object sender, EventArgs e)
         {
-            OnPlaydHandler();
+            OnPlaydStatusHandler();
         }
 
         public void StopPlayRecording()
@@ -121,52 +121,9 @@ namespace TestProject.Droid.Services
             }
         }
 
-        public void RenameFile(int id)
+        public void DeleteInitialFile()
         {
-            var path = Path.Combine(System.Environment.
-                 GetFolderPath(System.Environment.
-                 SpecialFolder.Personal), id.ToString() + TwitterUserId.Id_User + ".3gpp");
-            if (File.Exists(Constants.INITIAL_AUDIO_FILE_PATH))
-            {
-                if (File.Exists(path))
-                {
-                    File.Delete(path);
-                    File.Move(Constants.INITIAL_AUDIO_FILE_PATH, path);
-                    File.Delete(Constants.INITIAL_AUDIO_FILE_PATH);
-                }
-                else
-                {
-                    File.Move(Constants.INITIAL_AUDIO_FILE_PATH, path);
-                    File.Delete(Constants.INITIAL_AUDIO_FILE_PATH);
-                }
-            }
-        }
-
-        public void DeleteNullFile()
-        {
-
             File.Delete(Constants.INITIAL_AUDIO_FILE_PATH);
-        }
-
-        public bool CheckAudioFile(int id)
-        {
-            path = Path.Combine(System.Environment.
-                GetFolderPath(System.Environment.
-                SpecialFolder.Personal), id.ToString() + TwitterUserId.Id_User + ".3gpp");
-            var result = File.Exists(path);
-
-            return result;
-
-        }
-
-        public Action OnPlaydHandler
-        {
-            get; set;
-        }
-
-        public Action OnRecordHandler
-        {
-            get; set;
         }
     }
 }

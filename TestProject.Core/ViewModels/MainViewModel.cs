@@ -13,25 +13,35 @@ namespace TestProject.Core.ViewModels
 {
     public class MainViewModel : MvxViewModel
     {
+        #region Variables
         private IMvxNavigationService _mvxNavigationService;
         private ILoginService _loginService;
+        #endregion
 
-        public MainViewModel( IMvxNavigationService mvxNavigationService, ILoginService loginService)
+        #region Constructors
+        public MainViewModel(IMvxNavigationService mvxNavigationService, ILoginService loginService)
         {
             _loginService = loginService;
             _mvxNavigationService = mvxNavigationService;
             ShowCurrentViewModelCommand = new MvxAsyncCommand(ShowCurrentViewModel);
         }
+        #endregion
 
+        #region LifeCycle
+
+        #endregion
+
+        #region Commands
         public IMvxAsyncCommand ShowCurrentViewModelCommand { get; private set; }
+        #endregion
 
+        #region Methods
         private async Task ShowCurrentViewModel()
         {
 
             if (CrossSettings.Current.Contains("Twitter") == true)
             {
-                TwitterUserId.Id_User = CrossSettings.Current.GetValueOrDefault("Twitter", string.Empty).ToString();
-                _mvxNavigationService.Navigate<ViewPagerViewModel>();
+                _mvxNavigationService.Navigate<TasksContainerViewModel>();
             }
 
             if (CrossSettings.Current.Contains("Twitter") == false)
@@ -41,5 +51,14 @@ namespace TestProject.Core.ViewModels
 
 
         }
+        #endregion
+
+
+
+
+
+        
+
+        
     }
 }

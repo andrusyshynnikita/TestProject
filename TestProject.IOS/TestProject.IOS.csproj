@@ -220,15 +220,10 @@
       <SubType>Designer</SubType>
     </InterfaceDefinition>
     <InterfaceDefinition Include="Views\Cells\TasksViewCell.xib" />
-    <BundleResource Include="Resources\Coral Pen Free.ttf" />
+    <BundleResource Include="Resources\Coral_Pen_Free.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters\ColorValueConverter.cs" />
-    <Compile Include="Converters\IconValueConverter.cs" />
-    <Compile Include="Converters\PlayingButtonValueConverter.cs" />
-    <Compile Include="Converters\RecordingButtonValueConverter.cs" />
-    <Compile Include="Converters\VisibilityButtonValueConverter.cs" />
-    <Compile Include="Converters\VisibilityValueConverter.cs" />
+    <Compile Include="Converters\StatusToImageValueConverter.cs" />
     <Compile Include="CustomControls\AudioButton.cs" />
     <Compile Include="Views\Cells\TasksViewCell.cs" />
     <Compile Include="Views\Cells\TasksViewCell.designer.cs">
@@ -263,7 +258,7 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="Views\MainView.cs" />
-    <Compile Include="Views\TabBarView.cs" />
+    <Compile Include="Views\TasksContainerView.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TestProject.Core\TestProject.Core.csproj">

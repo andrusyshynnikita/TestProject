@@ -11,16 +11,33 @@ namespace TestProject.Droid.Views
 {
     [MvxFragmentPresentation(typeof(MainViewModel), Resource.Id.content_frame, false)]
     [Register("TestProject.droid.views.ViewPagerView")]
-    public class ViewPagerView : BaseFragment<ViewPagerViewModel>
+    public class TasksContainerView : BaseFragment<TasksContainerViewModel>
     {
+        #region Variables
         private ViewPager _viewPager;
+        #endregion
 
-        protected override int FragmentId => Resource.Layout.ViewPager;
-
+        #region LifeCycle
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             var view = base.OnCreateView(inflater, container, savedInstanceState);
 
+            SetUpViewPAger(view);
+
+            var tabLayout = view.FindViewById<Android.Support.Design.Widget.TabLayout>(Resource.Id.tabs);
+            tabLayout.SetupWithViewPager(_viewPager);
+
+            return view;
+        }
+        #endregion
+
+        #region Properties
+        protected override int FragmentId => Resource.Layout.ViewPager;
+        #endregion
+
+        #region Methods
+        private void SetUpViewPAger(View view)
+        {
             _viewPager = view.FindViewById<ViewPager>(Resource.Id.viewPager1);
             var fragments = new List<MvxViewPagerFragmentAdapter.FragmentInfo>
             {
@@ -44,11 +61,14 @@ namespace TestProject.Droid.Views
                 }
             };
             _viewPager.Adapter = new MvxViewPagerFragmentAdapter(Activity, ChildFragmentManager, fragments);
-
-            var tabLayout = view.FindViewById<Android.Support.Design.Widget.TabLayout>(Resource.Id.tabs);
-            tabLayout.SetupWithViewPager(_viewPager);
-
-            return view;
         }
+        #endregion
+
+
+
+
+
+
+
     }
 }

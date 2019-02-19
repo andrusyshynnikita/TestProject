@@ -1,18 +1,16 @@
-﻿using MvvmCross.Converters;
-using MvvmCross.Plugin.Visibility;
+﻿using MvvmCross.Plugin.Visibility;
 using MvvmCross.UI;
-using System;
 using System.Globalization;
 
-namespace TestProject.Droid.Converters
+namespace TestProject.Core.Converters
 {
-    public  class VisibilityValueConverter : MvxBaseVisibilityValueConverter<bool>
+    public class ReverseVisibilityValueConverter : MvxBaseVisibilityValueConverter<bool>
     {
         protected override MvxVisibility Convert(bool value, object parameter, CultureInfo culture)
         {
             if (value)
             {
-                return MvxVisibility.Hidden;
+                return MvxVisibility.Collapsed;
             }
 
             return MvxVisibility.Visible;

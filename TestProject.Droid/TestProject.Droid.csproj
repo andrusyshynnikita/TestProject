@@ -63,10 +63,6 @@
   <ItemGroup>
     <Compile Include="Adapters\MvxViewPagerFragmentAdapter.cs" />
     <Compile Include="Adapters\TaskItemAdapter.cs" />
-    <Compile Include="Converters\ColorValueConverter.cs" />
-    <Compile Include="Converters\PlayingButtonValueConverter.cs" />
-    <Compile Include="Converters\VisibilityButtonValueConverter.cs" />
-    <Compile Include="Converters\VisibilityValueConverter.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -82,7 +78,7 @@
     <Compile Include="Views\AboutView.cs" />
     <Compile Include="Views\MainView.cs" />
     <Compile Include="Views\NotDoneListItemView.cs" />
-    <Compile Include="Views\ViewPagerView.cs" />
+    <Compile Include="Views\TasksContainerView.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\13159.otf" />
@@ -280,6 +276,7 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Converters\" />
     <Folder Include="Helper\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

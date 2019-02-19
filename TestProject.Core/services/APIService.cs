@@ -19,9 +19,7 @@ namespace TestProject.Core.services
         private ITaskService _taskService;
         private byte[] _byteArrayAudio;
         private ByteArrayContent _baContent;
-
-        public Action OnRefresDonehDataHandler { get; set; }
-        public Action OnRefresNotDonehDataHandler { get; set; }
+        private List<TaskInfo> _tasks;
 
         public APIService(ITaskService taskService)
         {
@@ -29,47 +27,25 @@ namespace TestProject.Core.services
             _taskService = taskService;
         }
 
-        public async Task<bool> RefreshDataAsync()
+        public async Task RefreshDataAsync()
         {
-            try
+            Uri uri = new Uri(string.Format("http://10.10.3.221:58778/api/tasks/" + UserAccount.GetUserId()));
+
+            var response = await _client.GetAsync(uri);
+
+            if (response.IsSuccessStatusCode)
             {
-                var uri = new Uri(string.Format("http://10.10.3.221:58778/api/tasks/" + TwitterUserId.Id_User));
+                var content = await response.Content.ReadAsStringAsync();
+                _tasks = JsonConvert.DeserializeObject<List<TaskInfo>>(content);
 
-                var response = await _client.GetAsync(uri);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var content = await response.Content.ReadAsStringAsync();
-
-                    var _tasks = JsonConvert.DeserializeObject<List<TaskInfo>>(content);
-                    _taskService.DeleteUserAllTask(TwitterUserId.Id_User);
-                    _taskService.InsertAllUserTasks(_tasks);
-
-                    OnRefresDonehDataHandler();
-                    OnRefresNotDonehDataHandler();
-
-                }
-
-                return response.IsSuccessStatusCode;
+                _taskService.DeleteUserAllTask(UserAccount.GetUserId());
+                _taskService.InsertAllUserTasks(_tasks);
 
             }
-
-            catch (WebException ex)
-            {
-                throw new WebException(ex.Message);
-            }
-
-            catch (TaskCanceledException ex)
-            {
-                throw new TaskCanceledException(ex.Message);
-            }
-
         }
 
         public async Task InsertOrUpdateTaskAsync(TaskInfo item)
         {
-
-
             var content = new MultipartFormDataContent();
 
             bool initial_File = File.Exists(Constants.INITIAL_AUDIO_FILE_PATH);

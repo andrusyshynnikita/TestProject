@@ -9,42 +9,41 @@ using Xamarin.Essentials;
 
 namespace TestProject.Core.ViewModels
 {
-    public class ViewPagerViewModel : MvxViewModel
+    public class TasksContainerViewModel : BaseViewModel<Action>
     {
+        #region Variables
         private readonly IMvxNavigationService _navigationService;
         private ILoginService _loginService;
         private IAPIService _aPIService;
         private bool _isNetChecking;
+        #endregion
 
-        public ViewPagerViewModel(IMvxNavigationService navigationService, ILoginService loginService, IAPIService aPIService)
+        #region Constructors
+        public TasksContainerViewModel(IMvxNavigationService navigationService, ILoginService loginService, IAPIService aPIService)
         {
             _loginService = loginService;
             _navigationService = navigationService;
             _aPIService = aPIService;
             DoneListItemViewModel = Mvx.IoCConstruct<DoneListItemViewModel>();
-              NotDoneListItemViewModel = Mvx.IoCConstruct<NotDoneListItemViewModel>();
-              AboutViewModel1 = Mvx.IoCConstruct<AboutViewModel>();
+            NotDoneListItemViewModel = Mvx.IoCConstruct<NotDoneListItemViewModel>();
+            AboutViewModel1 = Mvx.IoCConstruct<AboutViewModel>();
 
             AboutViewModel1.OnLoggedInHandler = new Action(() =>
-           {
-               LogoutCommand.Execute();
-           });
-           
+            {
+                LogoutCommand.Execute();
+            });
+
             ShowDoneListItemViewModelCommand = new MvxAsyncCommand<Action>(async (closeHandler) => await _navigationService.Navigate<DoneListItemViewModel, Action>(closeHandler));
             ShowNotDoneListItemViewModelCommand = new MvxAsyncCommand<Action>(async (closeHandler) => await _navigationService.Navigate<NotDoneListItemViewModel, Action>(closeHandler));
             ShowAboutViewModelCommand = new MvxAsyncCommand<Action>(async (closeHandler) => await _navigationService.Navigate<AboutViewModel, Action>(closeHandler));
 
-            NetCheck();
+            NetChecking();
 
-            Connectivity.ConnectivityChanged += delegate { NetCheck(); };
+            Connectivity.ConnectivityChanged += delegate { NetChecking(); };
         }
+        #endregion
 
-        public DoneListItemViewModel DoneListItemViewModel { get; set; }
-
-        public NotDoneListItemViewModel NotDoneListItemViewModel { get; set; }
-
-        public AboutViewModel AboutViewModel1 { get; set; }
-
+        #region Commands
         public IMvxCommand LogoutCommand
         {
             get
@@ -52,11 +51,21 @@ namespace TestProject.Core.ViewModels
                 return new MvxAsyncCommand(LogOut);
             }
         }
-
         public IMvxAsyncCommand<Action> ShowDoneListItemViewModelCommand { get; private set; }
         public IMvxAsyncCommand<Action> ShowNotDoneListItemViewModelCommand { get; private set; }
         public IMvxAsyncCommand<Action> ShowAboutViewModelCommand { get; private set; }
+        #endregion
 
+        #region Properties
+        public DoneListItemViewModel DoneListItemViewModel { get; set; }
+
+        public NotDoneListItemViewModel NotDoneListItemViewModel { get; set; }
+
+        public AboutViewModel AboutViewModel1 { get; set; }
+
+        #endregion
+
+        #region Methods
         private async Task LogOut()
         {
 
@@ -64,33 +73,18 @@ namespace TestProject.Core.ViewModels
             await _navigationService.Navigate<LoginViewModel>();
             await _navigationService.Close(this);
         }
+        #endregion
 
-        public bool IsNetChecking
-        {
-            get
-            {
-                return _isNetChecking;
-            }
-            set
-            {
-                _isNetChecking = value;
-                RaisePropertyChanged(() => IsNetChecking);
-            }
-        }
 
-        private void NetCheck()
-        {
-            var currentNetWork = Connectivity.NetworkAccess;
 
-            if (currentNetWork == NetworkAccess.Internet)
-            {
-                IsNetChecking = true;
-            }
 
-            if (currentNetWork != NetworkAccess.Internet)
-            {
-                IsNetChecking = false;
-            }
-        }
+
+
+
+
+
+
+
+
     }
 }

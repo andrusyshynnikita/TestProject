@@ -1,10 +1,12 @@
-﻿using System;
+﻿using MvvmCross.Converters;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
-using MvvmCross.Converters;
+using System.Text;
 
-namespace TestProject.IOS.Converters
+namespace TestProject.Core.Converters
 {
-    public class RecordingButtonValueConverter : MvxValueConverter<bool>
+    public class StatusToTitleRecordButtonValueConverter : MvxValueConverter<bool>
 
     {
         protected override object Convert(bool value, Type targetType, object parameter, CultureInfo culture)

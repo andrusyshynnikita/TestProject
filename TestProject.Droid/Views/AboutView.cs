@@ -10,13 +10,18 @@ namespace TestProject.Droid.Views
     [Register("TestProject.droid.views.AboutView")]
     public class AboutView : BaseFragment<AboutViewModel>
     {
-        protected override int FragmentId => Resource.Layout.Fragmentlayout;
-
+ 
+        #region LifeCycle
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             var view = base.OnCreateView(inflater, container, savedInstanceState);
 
             return view;
         }
+        #endregion
+
+        #region Properties
+        protected override int FragmentId => Resource.Layout.Fragmentlayout;
+        #endregion
     }
 }
