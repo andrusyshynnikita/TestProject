@@ -1,4 +1,5 @@
-﻿using MvvmCross.ViewModels;
+﻿using MvvmCross.Navigation;
+using MvvmCross.ViewModels;
 using System;
 using Xamarin.Essentials;
 
@@ -8,6 +9,18 @@ namespace TestProject.Core.ViewModels
     {
         #region Variables
         private bool _isNetChecking;
+        protected readonly IMvxNavigationService _mvxNavigationService;
+        #endregion
+
+        #region Constructors
+        public BaseViewModel(IMvxNavigationService mvxNavigationService)
+        {
+            _mvxNavigationService = mvxNavigationService;
+        }
+        public BaseViewModel()
+        {
+
+        }
         #endregion
 
         #region LifeCycle
@@ -34,7 +47,7 @@ namespace TestProject.Core.ViewModels
         #endregion
 
         #region Methods
-        public void NetChecking()
+        public void CheckCurrentConnectivity()
         {
             var currentNetWork = Connectivity.NetworkAccess;
 

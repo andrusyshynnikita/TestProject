@@ -396,7 +396,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\StatusToImageValueConverter.cs" />
-    <Compile Include="CustomControls\AudioButton.cs" />
+    <Compile Include="Views\BaseView.cs" />
     <Compile Include="Views\Cells\TasksViewCell.cs" />
     <Compile Include="Views\Cells\TasksViewCell.designer.cs">
       <DependentUpon>TasksViewCell.cs</DependentUpon>
@@ -425,7 +425,6 @@
     <Compile Include="Views\LoginView.designer.cs">
       <DependentUpon>LoginView.cs</DependentUpon>
     </Compile>
-    <Compile Include="MvxBindings\NetworkIndicatorTargetBinding.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Setup.cs" />
@@ -438,9 +437,7 @@
       <Name>TestProject.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Helpers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Swift4.4.0.0.0\build\Xamarin.Swift4.targets" Condition="Exists('..\packages\Xamarin.Swift4.4.0.0.0\build\Xamarin.Swift4.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

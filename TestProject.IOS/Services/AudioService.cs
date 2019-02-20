@@ -66,7 +66,7 @@ namespace TestProject.IOS.Services
 
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    throw new Exception(e.Message);
                 }
             }
         }

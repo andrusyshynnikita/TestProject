@@ -39,18 +39,18 @@ namespace TestProject.Core.services
             
             if (eventArgs.IsAuthenticated)
             {
-                Account loggedInAccount = eventArgs.Account;
-                // AccountStore.Create().Save(loggedInAccount, "Twitter");
                 var request = new OAuth1Request("GET",
                     new Uri("https://api.twitter.com/1.1/account/verify_credentials.json"),
                     null,
                     eventArgs.Account);
+
                 var response = await request.GetResponseAsync();
                 
                 var json = response.GetResponseText();
 
                 _twitterUser = JsonConvert.DeserializeObject<TwitterUser>(json);
-                CrossSettings.Current.AddOrUpdateValue("Twitter", _twitterUser.id_str);
+
+                UserAccount.SetUserId(_twitterUser);
                 OnLoggedInHandler();
             }
 

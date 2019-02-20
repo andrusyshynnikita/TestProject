@@ -14,12 +14,6 @@ namespace TestProject.IOS.Views
         private bool _firstTimePresented = true;
         #endregion
 
-        #region Constructors
-        public TasksContainerView()
-        {
-        }
-        #endregion
-
         #region LifeCycle
         public override void ViewDidLoad()
         {

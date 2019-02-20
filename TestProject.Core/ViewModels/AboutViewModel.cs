@@ -13,9 +13,9 @@ namespace TestProject.Core.ViewModels
         #region Constructors
         public AboutViewModel()
         {
-            NetChecking();
+            CheckCurrentConnectivity();
 
-            Connectivity.ConnectivityChanged += delegate { NetChecking(); };
+            Connectivity.ConnectivityChanged += delegate { CheckCurrentConnectivity(); };
         }
         #endregion
 

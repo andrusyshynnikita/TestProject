@@ -13,7 +13,6 @@ namespace TestProject.Droid.Services
 
         private MediaRecorder _recorder;
         private MediaPlayer _player;
-        private string path;
 
         public Action OnPlaydStatusHandler { get; set; }
 
@@ -46,6 +45,7 @@ namespace TestProject.Droid.Services
             catch (Exception ex)
             {
                 Console.Out.WriteLine(ex.StackTrace);
+                throw;
             }
         }
 
@@ -99,6 +99,7 @@ namespace TestProject.Droid.Services
             catch (Exception ex)
             {
                 Console.Out.WriteLine(ex.StackTrace);
+                throw;
             }
 
         }

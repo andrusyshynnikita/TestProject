@@ -7,30 +7,12 @@ using UIKit;
 namespace TestProject.IOS.Views
 {
     [MvxModalPresentation(WrapInNavigationController = true, ModalTransitionStyle = UIModalTransitionStyle.FlipHorizontal)]
-    public partial class ItemView : MvxViewController<ItemViewModel>
+    public partial class ItemView : BaseView<ItemViewModel>
     {
-        #region Variables
-        private UIBarButtonItem _btnBack;
-        #endregion
-
-        #region Constructors
-        public ItemView() : base(nameof(ItemView), null)
-        {
-        }
-        #endregion
-
         #region LifeCycle
         public override void ViewDidLoad()
         {
-            base.ViewDidLoad();
-
-            Title = "TaskyDrop";
-
-            NavigationController.Toolbar.BackgroundColor = UIColor.Blue;
-            NavigationController.NavigationBar.BarTintColor = UIColor.Purple;
-            NavigationController.NavigationBar.TintColor = UIColor.Black;
-            _btnBack = new UIBarButtonItem(UIBarButtonSystemItem.Reply, null);
-            NavigationItem.SetLeftBarButtonItem(_btnBack, false);
+            base.ViewDidLoad();          
 
             this.Title_text.ShouldReturn += (textField) =>
             {
@@ -42,6 +24,7 @@ namespace TestProject.IOS.Views
             var g = new UITapGestureRecognizer(() => View.EndEditing(true));
             View.AddGestureRecognizer(g);
 
+            SetUpCloseNavigationBar();
             SetUpTextView();
             SetUpBinding();
         }
@@ -104,12 +87,5 @@ namespace TestProject.IOS.Views
             set.Apply();
         }
         #endregion
-
-
-
-
-
-
-
     }
 }

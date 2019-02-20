@@ -9,20 +9,18 @@ using Xamarin.Essentials;
 
 namespace TestProject.Core.ViewModels
 {
-    public class TasksContainerViewModel : BaseViewModel<Action>
+    public class TasksContainerViewModel : BaseViewModel<object>
     {
         #region Variables
-        private readonly IMvxNavigationService _navigationService;
         private ILoginService _loginService;
         private IAPIService _aPIService;
         private bool _isNetChecking;
         #endregion
 
         #region Constructors
-        public TasksContainerViewModel(IMvxNavigationService navigationService, ILoginService loginService, IAPIService aPIService)
+        public TasksContainerViewModel(IMvxNavigationService mvxNavigationService, ILoginService loginService, IAPIService aPIService): base(mvxNavigationService)
         {
             _loginService = loginService;
-            _navigationService = navigationService;
             _aPIService = aPIService;
             DoneListItemViewModel = Mvx.IoCProvider.IoCConstruct<DoneListItemViewModel>();
             NotDoneListItemViewModel = Mvx.IoCProvider.IoCConstruct<NotDoneListItemViewModel>();
@@ -33,13 +31,13 @@ namespace TestProject.Core.ViewModels
                  LogOut();
             });
 
-            ShowDoneListItemViewModelCommand = new MvxAsyncCommand<Action>(async (closeHandler) => await _navigationService.Navigate<DoneListItemViewModel, Action>(closeHandler));
-            ShowNotDoneListItemViewModelCommand = new MvxAsyncCommand<Action>(async (closeHandler) => await _navigationService.Navigate<NotDoneListItemViewModel, Action>(closeHandler));
-            ShowAboutViewModelCommand = new MvxAsyncCommand<Action>(async (closeHandler) => await _navigationService.Navigate<AboutViewModel, Action>(closeHandler));
+            ShowDoneListItemViewModelCommand = new MvxAsyncCommand<Action>(async (closeHandler) => await _mvxNavigationService.Navigate<DoneListItemViewModel>());
+            ShowNotDoneListItemViewModelCommand = new MvxAsyncCommand<Action>(async (closeHandler) => await _mvxNavigationService.Navigate<NotDoneListItemViewModel>());
+            ShowAboutViewModelCommand = new MvxAsyncCommand<Action>(async (closeHandler) => await _mvxNavigationService.Navigate<AboutViewModel, Action>(closeHandler));
 
-            NetChecking();
+            CheckCurrentConnectivity();
 
-            Connectivity.ConnectivityChanged += delegate { NetChecking(); };
+            Connectivity.ConnectivityChanged += delegate { CheckCurrentConnectivity(); };
         }
         #endregion
 
@@ -70,8 +68,8 @@ namespace TestProject.Core.ViewModels
         {
 
             _loginService.Logout();
-            await _navigationService.Navigate<LoginViewModel>();
-            await _navigationService.Close(this);
+            await _mvxNavigationService.Navigate<LoginViewModel>();
+            await _mvxNavigationService.Close(this);
         }
         #endregion
 

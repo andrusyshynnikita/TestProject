@@ -9,17 +9,11 @@ using UIKit;
 namespace TestProject.IOS.Views
 {
     [MvxTabPresentation(WrapInNavigationController = true, TabName = "Not Done Tasks")]
-    public partial class NotDoneListItemView : MvxViewController<NotDoneListItemViewModel>
+    public partial class NotDoneListItemView : BaseView<NotDoneListItemViewModel>
     {
         #region Variables
         private UIBarButtonItem _btnCAdd;
         private MvxUIRefreshControl _refreshControl;
-        #endregion
-
-        #region Constructors
-        public NotDoneListItemView() : base(nameof(NotDoneListItemView), null)
-        {
-        }
         #endregion
 
         #region LifeCycle
@@ -30,10 +24,7 @@ namespace TestProject.IOS.Views
             _refreshControl = new MvxUIRefreshControl();
             NotDoneTasksTableView.AddSubview(_refreshControl);
 
-            _btnCAdd = new UIBarButtonItem(UIBarButtonSystemItem.Add, null);
-            NavigationItem.SetRightBarButtonItem(_btnCAdd, false);
-            NavigationController.NavigationBar.BarTintColor = UIColor.Purple;
-            NavigationController.NavigationBar.TintColor = UIColor.Black;
+            SetUpNavigationBar();
 
             UIDevice.Notifications.ObserveOrientationDidChange(OrientationsHandler);
             netWork_button_constraint.Constant = TabBarController.TabBar.Frame.Size.Height;

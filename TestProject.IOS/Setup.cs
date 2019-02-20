@@ -5,7 +5,6 @@ using MvvmCross.IoC;
 using MvvmCross.Platforms.Ios.Core;
 using MvvmCross.Plugin.Json;
 using MvvmCross.ViewModels;
-using StarWarsSample.iOS.MvxBindings;
 using TestProject.Core;
 using UIKit;
 
@@ -24,8 +23,7 @@ namespace TestProject.IOS
         {
             base.InitializeLastChance();
 
-            var registry = Mvx.Resolve<IMvxTargetBindingFactoryRegistry>();
-             registry.RegisterFactory(new MvxCustomBindingFactory<UIViewController>("NetworkIndicator", (viewController) => new NetworkIndicatorTargetBinding(viewController)));
+            var registry = Mvx.Resolve<IMvxTargetBindingFactoryRegistry>();          
         }
 
         protected override IMvxIocOptions CreateIocOptions()

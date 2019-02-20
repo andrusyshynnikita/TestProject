@@ -8,15 +8,14 @@ using Xamarin.Essentials;
 
 namespace TestProject.Core.ViewModels
 {
-    public class LoginViewModel : BaseViewModel<Action>
+    public class LoginViewModel : BaseViewModel<object>
     {
         #region Variables
-        private IMvxNavigationService _mvxNavigationService;
         private ILoginService _loginService;
         #endregion
 
         #region Constructors
-        public LoginViewModel(IMvxNavigationService mvxNavigationService, ILoginService loginService)
+        public LoginViewModel(IMvxNavigationService mvxNavigationService, ILoginService loginService) : base(mvxNavigationService)
         {
             _loginService = loginService;
 
@@ -25,18 +24,9 @@ namespace TestProject.Core.ViewModels
                 ShowViewPager.Execute();
             });
 
-            _mvxNavigationService = mvxNavigationService;
+            CheckCurrentConnectivity();
 
-            NetChecking();
-
-            Connectivity.ConnectivityChanged += delegate { NetChecking(); };
-        }
-        #endregion
-
-        #region LifeCycle
-        public override Task Initialize()
-        {
-            return base.Initialize();
+            Connectivity.ConnectivityChanged += delegate { CheckCurrentConnectivity(); };
         }
         #endregion
 

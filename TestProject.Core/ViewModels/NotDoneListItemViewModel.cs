@@ -11,10 +11,9 @@ using TestProject.Core.Helper;
 
 namespace TestProject.Core.ViewModels
 {
-    public class NotDoneListItemViewModel : BaseViewModel<Action>
+    public class NotDoneListItemViewModel : BaseViewModel<object>
     {
         #region Variables
-        private readonly IMvxNavigationService _navigationService;
         private MvxObservableCollection<TaskInfo> _taskCollection;
         private ITaskService _taskService;
         private MvxCommand _refreshCommand;
@@ -24,19 +23,18 @@ namespace TestProject.Core.ViewModels
         #endregion
 
         #region Constructors
-        public NotDoneListItemViewModel(IMvxNavigationService mvxNavigationService, ITaskService taskService, ILoginService loginService, IAPIService aPIService)
+        public NotDoneListItemViewModel(IMvxNavigationService mvxNavigationService, ITaskService taskService, ILoginService loginService, IAPIService aPIService): base(mvxNavigationService)
         {
             _apiService = aPIService;
-            _navigationService = mvxNavigationService;
             _loginService = loginService;
             _taskService = taskService;
 
-            ShowSecondPageCommand = new MvxAsyncCommand(async () => await _navigationService.Navigate<ItemViewModel>());
+            ShowSecondPageCommand = new MvxAsyncCommand(async () => await _mvxNavigationService.Navigate<ItemViewModel>());
             TaskViewCommand = new MvxAsyncCommand<TaskInfo>(TransferTaskInfo);
 
-            NetChecking();
+            CheckCurrentConnectivity();
 
-            Connectivity.ConnectivityChanged += delegate { NetChecking(); };
+            Connectivity.ConnectivityChanged += delegate { CheckCurrentConnectivity(); };
         }
         #endregion
 
@@ -44,10 +42,6 @@ namespace TestProject.Core.ViewModels
         public override void ViewAppearing()
         {
             RefreshCurrentTasksData();
-        }
-
-        public override void Prepare(Action parameter)
-        {
         }
         #endregion
 
@@ -103,7 +97,7 @@ namespace TestProject.Core.ViewModels
 
         private async Task TransferTaskInfo(TaskInfo taskInfo)
         {
-            var result = await _navigationService.Navigate<ItemViewModel, TaskInfo>(taskInfo);
+            var result = await _mvxNavigationService.Navigate<ItemViewModel, TaskInfo>(taskInfo);
         }
 
         private async void RefreshCurrentTasksData()
@@ -127,8 +121,8 @@ namespace TestProject.Core.ViewModels
         private async Task LogOut()
         {
             _loginService.Logout();
-            await _navigationService.Navigate<LoginViewModel>();
-            await _navigationService.Close(this);
+            await _mvxNavigationService.Navigate<LoginViewModel>();
+            await _mvxNavigationService.Close(this);
         }
         #endregion
 

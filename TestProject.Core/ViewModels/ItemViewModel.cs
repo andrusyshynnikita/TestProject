@@ -13,7 +13,6 @@ namespace TestProject.Core.ViewModels
     public class ItemViewModel : BaseViewModel<TaskInfo>
     {
         #region Variables
-        private readonly IMvxNavigationService _navigationService;
         private readonly ITaskService _taskService;
         private readonly IAudioService _audioService;
         private readonly IAPIService _apiService;
@@ -28,14 +27,12 @@ namespace TestProject.Core.ViewModels
         private bool _recordcheck;
         private bool _playdcheck;
         private bool _playRecordEnable;
-        private bool _isNetChecking;
         #endregion
 
         #region Constructors
-        public ItemViewModel(IMvxNavigationService mvxNavigationService, ITaskService taskService, IAudioService audioService, IAPIService apiService)
+        public ItemViewModel(IMvxNavigationService mvxNavigationService, ITaskService taskService, IAudioService audioService, IAPIService apiService) :base(mvxNavigationService)
         {
             _taskService = taskService;
-            _navigationService = mvxNavigationService;
             _audioService = audioService;
             _apiService = apiService;
             PermissionToPlay = false;
@@ -47,9 +44,9 @@ namespace TestProject.Core.ViewModels
                 IsPlayChecking = true;
             });
 
-            NetChecking();
+            CheckCurrentConnectivity();
 
-            Connectivity.ConnectivityChanged += delegate { NetChecking(); };
+            Connectivity.ConnectivityChanged += delegate { CheckCurrentConnectivity(); };
         }
         #endregion
 
@@ -293,7 +290,7 @@ namespace TestProject.Core.ViewModels
         private async Task CloseTask()
         {
             _audioService.DeleteInitialFile();
-            await _navigationService.Close(this);
+            await _mvxNavigationService.Close(this);
         }
 
         private async void SaveTask()
@@ -304,7 +301,7 @@ namespace TestProject.Core.ViewModels
                 await _apiService.InsertOrUpdateTaskAsync(taskInfo);
             }
 
-            await _navigationService.Close(this);
+            await _mvxNavigationService.Close(this);
         }
 
         private async void DeleteTask()
@@ -312,7 +309,7 @@ namespace TestProject.Core.ViewModels
 
             await _apiService.DeleteTaskAsync(new TaskInfo(Id, UserAccount.GetUserId(), Title, Description, Status, AudioFileName));
 
-            await _navigationService.Close(this);
+            await _mvxNavigationService.Close(this);
         }
         #endregion
     }
