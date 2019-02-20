@@ -24,13 +24,13 @@ namespace TestProject.Core.ViewModels
             _loginService = loginService;
             _navigationService = navigationService;
             _aPIService = aPIService;
-            DoneListItemViewModel = Mvx.IoCConstruct<DoneListItemViewModel>();
-            NotDoneListItemViewModel = Mvx.IoCConstruct<NotDoneListItemViewModel>();
-            AboutViewModel1 = Mvx.IoCConstruct<AboutViewModel>();
+            DoneListItemViewModel = Mvx.IoCProvider.IoCConstruct<DoneListItemViewModel>();
+            NotDoneListItemViewModel = Mvx.IoCProvider.IoCConstruct<NotDoneListItemViewModel>();
+            AboutViewModel1 = Mvx.IoCProvider.IoCConstruct<AboutViewModel>();
 
-            AboutViewModel1.OnLoggedInHandler = new Action(() =>
+            AboutViewModel1.OnLogOutHandler = new Action(() =>
             {
-                LogoutCommand.Execute();
+                 LogOut();
             });
 
             ShowDoneListItemViewModelCommand = new MvxAsyncCommand<Action>(async (closeHandler) => await _navigationService.Navigate<DoneListItemViewModel, Action>(closeHandler));

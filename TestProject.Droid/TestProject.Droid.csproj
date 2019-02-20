@@ -91,29 +91,6 @@
     <AndroidResource Include="Resources\values\ic_launcher_background.xml" />
     <AndroidResource Include="Resources\values\strings.xml" />
     <AndroidResource Include="Resources\values\styles.xml" />
-    <AndroidResource Include="Resources\mipmap\ic_launcher.xml" />
-    <AndroidResource Include="Resources\mipmap\ic_launcher_round.xml" />
-    <AndroidResource Include="Resources\mipmap-hdpi\ic_launcher.png" />
-    <AndroidResource Include="Resources\mipmap-hdpi\ic_launcher_foreground.png" />
-    <AndroidResource Include="Resources\mipmap-hdpi\ic_launcher_round.png" />
-    <AndroidResource Include="Resources\mipmap-mdpi\ic_launcher.png" />
-    <AndroidResource Include="Resources\mipmap-mdpi\ic_launcher_foreground.png" />
-    <AndroidResource Include="Resources\mipmap-mdpi\ic_launcher_round.png" />
-    <AndroidResource Include="Resources\mipmap-xhdpi\ic_launcher.png" />
-    <AndroidResource Include="Resources\mipmap-xhdpi\ic_launcher_foreground.png" />
-    <AndroidResource Include="Resources\mipmap-xhdpi\ic_launcher_round.png" />
-    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_launcher.png" />
-    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_launcher_foreground.png" />
-    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_launcher_round.png" />
-    <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher.png" />
-    <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher_foreground.png" />
-    <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher_round.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\mipmap-mdpi\ic_action_content_create.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\mipmap-mdpi\ic_action_content_save.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\icons8_add_new_48.png" />
@@ -147,6 +124,42 @@
     <AndroidResource Include="Resources\layout\NotDoneListItemsLayout.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable\ShapeSaveButton.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\ShapeDeleteButton.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\ShapeToggleButton.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\mipmap-hdpi\icon_launcher.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\icon_launcher.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\icon_launcher.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\icon_launcher.png" />
+    <AndroidResource Include="Resources\mipmap-xxxhdpi\icon_launcher.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\icon_launcher_round.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\icon_launcher_round.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\icon_launcher_round.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\icon_launcher_round.png" />
+    <AndroidResource Include="Resources\mipmap-xxxhdpi\icon_launcher_round.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\Icon_launch.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\Icon_launch.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\Icon_launch.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\Icon_launch.png" />
+    <AndroidResource Include="Resources\mipmap-xxxhdpi\Icon_launch.png" />
+    <AndroidResource Include="Resources\mipmap\icons_launch.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\mipmap-hdpi\icon_launcher2.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\icon_launcher2.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\icon_launcher2.png" />
+    <AndroidResource Include="Resources\mipmap-xxxhdpi\icon_launcher2.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher.png" />
     <Content Include="Resources\mipmap\twotone_add_box_24.png">
       <SubType>Designer</SubType>
     </Content>

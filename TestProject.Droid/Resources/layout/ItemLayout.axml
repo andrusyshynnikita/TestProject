@@ -80,7 +80,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="5dp"
-			android:background="#008000"
+			android:background="@drawable/shapesavebutton"
 			android:text="Save"
 		    local:MvxBind = "Click SaveCommand; Enabled IsSavingTaskEnable"/>
 		<Button
@@ -89,7 +89,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="10dp"
 			android:text="Delete"
-			android:background="#FF0000"
+			android:background="@drawable/shapedeletebutton"
 		    local:MvxBind = "Click DeleteCommand;Enabled IsDeletingTaskEnable"/>
 	</LinearLayout>
 		<LinearLayout

@@ -65,7 +65,7 @@ namespace TestProject.Core.ViewModels
             Title = _taskInfo.Title;
             Description = _taskInfo.Description;
             Status = _taskInfo.Status;
-            AudioFileName = _taskInfo.AudioFilePath;
+            AudioFileName = _taskInfo.AudioFileName;
 
 
             if (AudioFileName != null)

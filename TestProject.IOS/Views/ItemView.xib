@@ -37,7 +37,7 @@
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Title" borderStyle="bezel" minimumFontSize="17" id="162" translatesAutoresizingMaskIntoConstraints="NO" textAlignment="center" placeholder="Title">
                                     <rect key="frame" x="8" y="30" width="398" height="56"/>
                                     <nil key="textColor"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                    <fontDescription key="fontDescription" name="FondyScriptPERSONALUSEONLY" family="Fondy Script PERSONAL USE ONLY" pointSize="26"/>
                                     <textInputTraits key="textInputTraits"/>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute keyPath="layer.cornerRadius" type="number">

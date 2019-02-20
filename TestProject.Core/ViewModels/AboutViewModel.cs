@@ -22,7 +22,7 @@ namespace TestProject.Core.ViewModels
         #region LifeCycle
         public override void Prepare(Action parameter)
         {
-            OnLoggedInHandler = parameter;
+            OnLogOutHandler = parameter;
         }
         #endregion
 
@@ -31,7 +31,7 @@ namespace TestProject.Core.ViewModels
         #endregion
 
         #region Properties
-        public Action OnLoggedInHandler
+        public Action OnLogOutHandler
         {
             get; set;
         }
@@ -44,7 +44,7 @@ namespace TestProject.Core.ViewModels
         #region Methods
         private void LogOut()
         {
-            OnLoggedInHandler();
+            OnLogOutHandler();
         }
         #endregion
     }

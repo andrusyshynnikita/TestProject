@@ -6520,26 +6520,26 @@ namespace TestProject.Droid
 			// aapt resource value: 0x7f020053
 			public const int avd_hide_password = 2130837587;
 			
-			// aapt resource value: 0x7f020073
-			public const int avd_hide_password_1 = 2130837619;
+			// aapt resource value: 0x7f020076
+			public const int avd_hide_password_1 = 2130837622;
 			
-			// aapt resource value: 0x7f020074
-			public const int avd_hide_password_2 = 2130837620;
+			// aapt resource value: 0x7f020077
+			public const int avd_hide_password_2 = 2130837623;
 			
-			// aapt resource value: 0x7f020075
-			public const int avd_hide_password_3 = 2130837621;
+			// aapt resource value: 0x7f020078
+			public const int avd_hide_password_3 = 2130837624;
 			
 			// aapt resource value: 0x7f020054
 			public const int avd_show_password = 2130837588;
 			
-			// aapt resource value: 0x7f020076
-			public const int avd_show_password_1 = 2130837622;
+			// aapt resource value: 0x7f020079
+			public const int avd_show_password_1 = 2130837625;
 			
-			// aapt resource value: 0x7f020077
-			public const int avd_show_password_2 = 2130837623;
+			// aapt resource value: 0x7f02007a
+			public const int avd_show_password_2 = 2130837626;
 			
-			// aapt resource value: 0x7f020078
-			public const int avd_show_password_3 = 2130837624;
+			// aapt resource value: 0x7f02007b
+			public const int avd_show_password_3 = 2130837627;
 			
 			// aapt resource value: 0x7f020055
 			public const int baseline_add_box_black_24dp = 2130837589;
@@ -6607,11 +6607,11 @@ namespace TestProject.Droid
 			// aapt resource value: 0x7f02006a
 			public const int notification_icon_background = 2130837610;
 			
-			// aapt resource value: 0x7f020071
-			public const int notification_template_icon_bg = 2130837617;
+			// aapt resource value: 0x7f020074
+			public const int notification_template_icon_bg = 2130837620;
 			
-			// aapt resource value: 0x7f020072
-			public const int notification_template_icon_low_bg = 2130837618;
+			// aapt resource value: 0x7f020075
+			public const int notification_template_icon_low_bg = 2130837621;
 			
 			// aapt resource value: 0x7f02006b
 			public const int notification_tile_bg = 2130837611;
@@ -6620,16 +6620,25 @@ namespace TestProject.Droid
 			public const int notify_panel_notification_icon_bg = 2130837612;
 			
 			// aapt resource value: 0x7f02006d
-			public const int ShapeEditText = 2130837613;
+			public const int ShapeDeleteButton = 2130837613;
 			
 			// aapt resource value: 0x7f02006e
-			public const int tooltip_frame_dark = 2130837614;
+			public const int ShapeEditText = 2130837614;
 			
 			// aapt resource value: 0x7f02006f
-			public const int tooltip_frame_light = 2130837615;
+			public const int ShapeSaveButton = 2130837615;
 			
 			// aapt resource value: 0x7f020070
-			public const int twitter_login_button = 2130837616;
+			public const int ShapeToggleButton = 2130837616;
+			
+			// aapt resource value: 0x7f020071
+			public const int tooltip_frame_dark = 2130837617;
+			
+			// aapt resource value: 0x7f020072
+			public const int tooltip_frame_light = 2130837618;
+			
+			// aapt resource value: 0x7f020073
+			public const int twitter_login_button = 2130837619;
 			
 			static Drawable()
 			{
@@ -7536,22 +7545,31 @@ namespace TestProject.Droid
 			public const int ic_launcher = 2130903040;
 			
 			// aapt resource value: 0x7f030001
-			public const int ic_launcher_foreground = 2130903041;
+			public const int Icon_launch = 2130903041;
 			
 			// aapt resource value: 0x7f030002
-			public const int ic_launcher_round = 2130903042;
+			public const int icon_launcher = 2130903042;
 			
 			// aapt resource value: 0x7f030003
-			public const int twotone_add_box_black_18 = 2130903043;
+			public const int icon_launcher2 = 2130903043;
 			
 			// aapt resource value: 0x7f030004
-			public const int twotone_add_box_black_24 = 2130903044;
+			public const int icon_launcher_round = 2130903044;
 			
 			// aapt resource value: 0x7f030005
-			public const int twotone_add_box_black_36 = 2130903045;
+			public const int icons_launch = 2130903045;
 			
 			// aapt resource value: 0x7f030006
-			public const int twotone_add_box_black_48 = 2130903046;
+			public const int twotone_add_box_black_18 = 2130903046;
+			
+			// aapt resource value: 0x7f030007
+			public const int twotone_add_box_black_24 = 2130903047;
+			
+			// aapt resource value: 0x7f030008
+			public const int twotone_add_box_black_36 = 2130903048;
+			
+			// aapt resource value: 0x7f030009
+			public const int twotone_add_box_black_48 = 2130903049;
 			
 			static Mipmap()
 			{

@@ -8,7 +8,6 @@ namespace TestProject.Core.Interface
 {
     public interface ILoginService
     {
-
         void LoginTwitter();
         Action OnLoggedInHandler { get; set; }
         OAuth1Authenticator Authenticator();

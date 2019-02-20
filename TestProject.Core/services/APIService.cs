@@ -18,7 +18,7 @@ namespace TestProject.Core.services
         private HttpClient _client;
         private ITaskService _taskService;
         private byte[] _byteArrayAudio;
-        private ByteArrayContent _baContent;
+        private ByteArrayContent _audioContent;
         private List<TaskInfo> _tasks;
 
         public APIService(ITaskService taskService)
@@ -54,27 +54,27 @@ namespace TestProject.Core.services
             {
                 _byteArrayAudio = File.ReadAllBytes(Constants.INITIAL_AUDIO_FILE_PATH);
 
-                _baContent = new ByteArrayContent(_byteArrayAudio);
+                _audioContent = new ByteArrayContent(_byteArrayAudio);
 
                 File.Delete(Constants.INITIAL_AUDIO_FILE_PATH);
             }
 
-            if (item.AudioFilePath == null && initial_File == true)
+            if (item.AudioFileName == null && initial_File == true)
             {
                 var fileName = Guid.NewGuid() + ".m4a";
 
-                item.AudioFilePath = fileName;
+                item.AudioFileName = fileName;
 
-                content.Add(_baContent,
+                content.Add(_audioContent,
             "\"file\"",
             $"\"{fileName}\"");
             }
 
-            if (item.AudioFilePath != null && initial_File == true)
+            if (item.AudioFileName != null && initial_File == true)
             {
-                content.Add(_baContent,
+                content.Add(_audioContent,
             "\"file\"",
-            $"\"{item.AudioFilePath}\"");
+            $"\"{item.AudioFileName}\"");
             }
 
             var uri = new Uri(string.Format("http://10.10.3.221:58778/api/Files/Upload"));

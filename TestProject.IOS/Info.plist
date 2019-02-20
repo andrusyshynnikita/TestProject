@@ -45,6 +45,11 @@
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleLightContent</string>
 	<key>XSAppIconAssets</key>
-	<string>Assets.xcassets/AppIcon.appiconset</string>
+	<string>Assets.xcassets/CustomAppIcon.appiconset</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Coral_Pen_Free.ttf</string>
+		<string>FondyScript_PERSONAL_USE_ONLY.ttf</string>
+	</array>
 </dict>
 </plist>

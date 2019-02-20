@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using SQLite;
+﻿using SQLite;
 
 namespace TestProject.Core.Models
 {
@@ -14,7 +11,7 @@ namespace TestProject.Core.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public bool Status { get; set; }
-        public string AudioFilePath { get; set; }
+        public string AudioFileName { get; set; }
 
         public TaskInfo(int id,string user_id, string taskName, string taskDescription, bool taskStatus, string audioFilePath)
         {
@@ -23,7 +20,7 @@ namespace TestProject.Core.Models
             Title = taskName;
             Description = taskDescription;
             Status = taskStatus;
-            AudioFilePath = audioFilePath;
+            AudioFileName = audioFilePath;
         }
 
         public TaskInfo()
