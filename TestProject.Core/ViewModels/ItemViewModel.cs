@@ -13,9 +13,6 @@ namespace TestProject.Core.ViewModels
     public class ItemViewModel : BaseViewModel<TaskInfo>
     {
         #region Variables
-        private readonly ITaskService _taskService;
-        private readonly IAudioService _audioService;
-        private readonly IAPIService _apiService;
         private int _id;
         private string _title;
         private string _description;
@@ -30,11 +27,8 @@ namespace TestProject.Core.ViewModels
         #endregion
 
         #region Constructors
-        public ItemViewModel(IMvxNavigationService mvxNavigationService, ITaskService taskService, IAudioService audioService, IAPIService apiService) :base(mvxNavigationService)
+        public ItemViewModel(IMvxNavigationService mvxNavigationService, ITaskService taskService, IAudioService audioService, IAPIService apiService) :base(mvxNavigationService, taskService, audioService, apiService)
         {
-            _taskService = taskService;
-            _audioService = audioService;
-            _apiService = apiService;
             PermissionToPlay = false;
             IsREcordChecking = true;
             IsPlayChecking = true;

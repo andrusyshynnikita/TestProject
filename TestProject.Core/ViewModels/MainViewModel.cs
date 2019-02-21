@@ -19,9 +19,8 @@ namespace TestProject.Core.ViewModels
         #endregion
 
         #region Constructors
-        public MainViewModel(IMvxNavigationService mvxNavigationService, ILoginService loginService)
+        public MainViewModel(IMvxNavigationService mvxNavigationService)
         {
-            _loginService = loginService;
             _mvxNavigationService = mvxNavigationService;
             ShowCurrentViewModelCommand = new MvxAsyncCommand(ShowCurrentViewModel);
         }
