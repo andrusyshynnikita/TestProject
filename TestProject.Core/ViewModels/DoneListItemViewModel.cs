@@ -31,9 +31,6 @@ namespace TestProject.Core.ViewModels
 
             ShowSecondPageCommand = new MvxAsyncCommand(async () => await _mvxNavigationService.Navigate<ItemViewModel>());
             TaskViewCommand = new MvxAsyncCommand<TaskInfo>(TransferTaskInfo);
-
-            base.CheckCurrentConnectivity();
-            Connectivity.ConnectivityChanged += delegate { base.CheckCurrentConnectivity(); };
         }
         #endregion
 

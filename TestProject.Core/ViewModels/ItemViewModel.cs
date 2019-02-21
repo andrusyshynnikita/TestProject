@@ -42,11 +42,7 @@ namespace TestProject.Core.ViewModels
             _audioService.OnPlaydStatusHandler = new Action(() =>
             {
                 IsPlayChecking = true;
-            });
-
-            CheckCurrentConnectivity();
-
-            Connectivity.ConnectivityChanged += delegate { CheckCurrentConnectivity(); };
+            });            
         }
         #endregion
 

@@ -23,10 +23,6 @@ namespace TestProject.Core.ViewModels
             {
                 ShowViewPager.Execute();
             });
-
-            CheckCurrentConnectivity();
-
-            Connectivity.ConnectivityChanged += delegate { CheckCurrentConnectivity(); };
         }
         #endregion
 

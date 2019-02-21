@@ -11,11 +11,8 @@ namespace TestProject.Core.ViewModels
         #endregion
 
         #region Constructors
-        public AboutViewModel()
+        public AboutViewModel() : base()
         {
-            CheckCurrentConnectivity();
-
-            Connectivity.ConnectivityChanged += delegate { CheckCurrentConnectivity(); };
         }
         #endregion
 

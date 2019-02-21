@@ -33,11 +33,7 @@ namespace TestProject.Core.ViewModels
 
             ShowDoneListItemViewModelCommand = new MvxAsyncCommand<Action>(async (closeHandler) => await _mvxNavigationService.Navigate<DoneListItemViewModel>());
             ShowNotDoneListItemViewModelCommand = new MvxAsyncCommand<Action>(async (closeHandler) => await _mvxNavigationService.Navigate<NotDoneListItemViewModel>());
-            ShowAboutViewModelCommand = new MvxAsyncCommand<Action>(async (closeHandler) => await _mvxNavigationService.Navigate<AboutViewModel, Action>(closeHandler));
-
-            CheckCurrentConnectivity();
-
-            Connectivity.ConnectivityChanged += delegate { CheckCurrentConnectivity(); };
+            ShowAboutViewModelCommand = new MvxAsyncCommand<Action>(async (closeHandler) => await _mvxNavigationService.Navigate<AboutViewModel, Action>(closeHandler));            
         }
         #endregion
 

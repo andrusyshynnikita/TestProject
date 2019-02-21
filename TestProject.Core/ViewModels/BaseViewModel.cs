@@ -16,10 +16,16 @@ namespace TestProject.Core.ViewModels
         public BaseViewModel(IMvxNavigationService mvxNavigationService)
         {
             _mvxNavigationService = mvxNavigationService;
+
+            CheckCurrentConnectivity();
+
+            Connectivity.ConnectivityChanged += delegate { CheckCurrentConnectivity(); };
         }
         public BaseViewModel()
         {
+            CheckCurrentConnectivity();
 
+            Connectivity.ConnectivityChanged += delegate { CheckCurrentConnectivity(); };
         }
         #endregion
 
