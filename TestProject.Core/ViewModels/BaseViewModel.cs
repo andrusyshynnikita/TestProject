@@ -13,13 +13,9 @@ namespace TestProject.Core.ViewModels
         #endregion
 
         #region Constructors
-        public BaseViewModel(IMvxNavigationService mvxNavigationService)
+        public BaseViewModel(IMvxNavigationService mvxNavigationService): this()
         {
-            _mvxNavigationService = mvxNavigationService;
-
-            CheckCurrentConnectivity();
-
-            Connectivity.ConnectivityChanged += delegate { CheckCurrentConnectivity(); };
+            _mvxNavigationService = mvxNavigationService;            
         }
         public BaseViewModel()
         {

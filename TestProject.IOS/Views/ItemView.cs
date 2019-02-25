@@ -1,6 +1,5 @@
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
-using MvvmCross.Platforms.Ios.Views;
 using TestProject.Core.ViewModels;
 using UIKit;
 
@@ -21,12 +20,18 @@ namespace TestProject.IOS.Views
 
             };
 
-            var g = new UITapGestureRecognizer(() => View.EndEditing(true));
-            View.AddGestureRecognizer(g);
+            this.Description_text.ShouldEndEditing += (textField) =>
+            {
+                textField.ResignFirstResponder();
+                return true;
+            };
 
+            var g = new UITapGestureRecognizer(() => View.EndEditing(true));
+
+            View.AddGestureRecognizer(g);
             SetUpCloseNavigationBar();
-            SetUpTextView();
             SetUpBinding();
+            SetUpTextView();
         }
         #endregion
 

@@ -18,18 +18,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ieq-bN-wsI" image="screenimages">
-                                <rect key="frame" x="111" y="136" width="214" height="321"/>
+                                <rect key="frame" x="52" y="254" width="319" height="227"/>
                                 <constraints>
-                                    <constraint id="331" firstAttribute="width" constant="214"/>
-                                    <constraint id="332" firstAttribute="height" constant="321"/>
+                                    <constraint id="704" firstAttribute="height" constant="227"/>
+                                    <constraint id="705" firstAttribute="width" constant="319"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint id="333" firstItem="Ieq-bN-wsI" firstAttribute="leading" secondItem="yd7-JS-zBw" secondAttribute="leadingMargin" constant="91"/>
-                            <constraint id="334" firstItem="Ieq-bN-wsI" firstAttribute="top" secondItem="Y8P-hJ-Z43" secondAttribute="bottom" constant="116"/>
-                            <constraint id="335" firstAttribute="trailingMargin" secondItem="Ieq-bN-wsI" secondAttribute="trailing" constant="69"/>
+                            <constraint id="706" firstItem="Ieq-bN-wsI" firstAttribute="centerX" secondItem="yd7-JS-zBw" secondAttribute="centerX" constant="4"/>
+                            <constraint id="707" firstItem="Ieq-bN-wsI" firstAttribute="centerY" secondItem="yd7-JS-zBw" secondAttribute="centerY"/>
                         </constraints>
                     </view>
                 </viewController>

@@ -49,7 +49,7 @@ namespace TestProject.Core.services
             var content = new MultipartFormDataContent();
 
             bool initial_File = File.Exists(Constants.INITIAL_AUDIO_FILE_PATH);
-
+           
             if (initial_File == true)
             {
                 _byteArrayAudio = File.ReadAllBytes(Constants.INITIAL_AUDIO_FILE_PATH);
@@ -57,6 +57,13 @@ namespace TestProject.Core.services
                 _audioContent = new ByteArrayContent(_byteArrayAudio);
 
                 File.Delete(Constants.INITIAL_AUDIO_FILE_PATH);
+            }
+          
+            if (item.AudioFileName != null && initial_File == true)
+            {
+                content.Add(_audioContent,
+            "\"file\"",
+            $"\"{item.AudioFileName}\"");
             }
 
             if (item.AudioFileName == null && initial_File == true)
@@ -68,13 +75,6 @@ namespace TestProject.Core.services
                 content.Add(_audioContent,
             "\"file\"",
             $"\"{fileName}\"");
-            }
-
-            if (item.AudioFileName != null && initial_File == true)
-            {
-                content.Add(_audioContent,
-            "\"file\"",
-            $"\"{item.AudioFileName}\"");
             }
 
             var uri = new Uri(string.Format("http://10.10.3.221:58778/api/Files/Upload"));

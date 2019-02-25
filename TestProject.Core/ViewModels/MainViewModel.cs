@@ -11,25 +11,19 @@ using TestProject.Core.Models;
 
 namespace TestProject.Core.ViewModels
 {
-    public class MainViewModel : MvxViewModel
+    public class MainViewModel : BaseViewModel<object>
     {
         #region Variables
-        private IMvxNavigationService _mvxNavigationService;
         private ILoginService _loginService;
         #endregion
 
         #region Constructors
-        public MainViewModel(IMvxNavigationService mvxNavigationService, ILoginService loginService)
+        public MainViewModel(IMvxNavigationService mvxNavigationService) : base(mvxNavigationService)
         {
-            _loginService = loginService;
-            _mvxNavigationService = mvxNavigationService;
             ShowCurrentViewModelCommand = new MvxAsyncCommand(ShowCurrentViewModel);
         }
         #endregion
 
-        #region LifeCycle
-
-        #endregion
 
         #region Commands
         public IMvxAsyncCommand ShowCurrentViewModelCommand { get; private set; }

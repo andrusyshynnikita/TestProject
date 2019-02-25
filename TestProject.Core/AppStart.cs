@@ -13,11 +13,10 @@ namespace TestProject.Core
         private IMvxNavigationService _mvxNavigationService;
         private ILoginService _loginService;
 
-        public AppStart(IMvxApplication app, IMvxNavigationService mvxNavigationService, ILoginService loginService)
+        public AppStart(IMvxApplication app, IMvxNavigationService mvxNavigationService)
             : base(app, mvxNavigationService)
         {
             _mvxNavigationService = mvxNavigationService;
-            _loginService = loginService;
         }
 
         protected override  Task NavigateToFirstViewModel(object hint = null)

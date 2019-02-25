@@ -51,7 +51,7 @@
                                         <constraint id="24453" firstAttribute="height" constant="56"/>
                                     </constraints>
                                 </textField>
-                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="327" translatesAutoresizingMaskIntoConstraints="NO" text="Description" textAlignment="center">
+                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="327" translatesAutoresizingMaskIntoConstraints="NO" textAlignment="center">
                                     <rect key="frame" x="8" y="108" width="398" height="128"/>
                                     <color key="backgroundColor" colorSpace="calibratedRGB" red="1" green="1" blue="0" alpha="1"/>
                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>

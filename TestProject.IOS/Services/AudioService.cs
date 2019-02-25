@@ -52,7 +52,7 @@ namespace TestProject.IOS.Services
 
             }
 
-            if (File.Exists(path))
+            if (File.Exists(path) && !File.Exists(Constants.INITIAL_AUDIO_FILE_PATH))
             {
                 try
                 {

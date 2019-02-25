@@ -12,7 +12,6 @@ namespace TestProject.IOS.Views
     public partial class NotDoneListItemView : BaseView<NotDoneListItemViewModel>
     {
         #region Variables
-        private UIBarButtonItem _btnCAdd;
         private MvxUIRefreshControl _refreshControl;
         #endregion
 
@@ -44,8 +43,8 @@ namespace TestProject.IOS.Views
             var set = this.CreateBindingSet<NotDoneListItemView, NotDoneListItemViewModel>();
             set.Bind(source).To(vm => vm.TaskCollection);
             set.Bind(source).For(v => v.SelectionChangedCommand).To(vm => vm.TaskViewCommand);
-            set.Bind(_btnCAdd).For("Clicked").To(vm => vm.ShowSecondPageCommand);
-            set.Bind(_btnCAdd).For("Enabled").To(vm => vm.IsNetChecking);
+            set.Bind(_btnAdd).For("Clicked").To(vm => vm.ShowSecondPageCommand);
+            set.Bind(_btnAdd).For("Enabled").To(vm => vm.IsNetChecking);
             set.Bind(_refreshControl).For(r => r.IsRefreshing).To(vm => vm.IsRefreshing);
             set.Bind(_refreshControl).For(r => r.RefreshCommand).To(vm => vm.RefreshCommand);
             set.Bind(netWork_label).For("Visibility").To(vm => vm.IsNetChecking).WithConversion("ReverseVisibility");

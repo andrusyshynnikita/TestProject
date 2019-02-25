@@ -87,7 +87,7 @@ namespace TestProject.Droid.Services
                     _player.Completion += PlayCompletion;
                 }
 
-                if(path!= null)
+                if(path!= null && !File.Exists(Constants.INITIAL_AUDIO_FILE_PATH))
                 {
                     await _player.SetDataSourceAsync(path);
                     _player.Prepare();
