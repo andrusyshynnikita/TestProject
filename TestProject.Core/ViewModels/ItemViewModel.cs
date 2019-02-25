@@ -7,16 +7,12 @@ using TestProject.Core.Models;
 using System;
 using TestProject.Core.Helper;
 using Xamarin.Essentials;
-using TestProject.Core.services;
 
 namespace TestProject.Core.ViewModels
 {
     public class ItemViewModel : BaseViewModel<TaskInfo>
     {
         #region Variables
-        private readonly ITaskService _taskService;
-        private readonly IAudioService _audioService;
-        private readonly IAPIService _apiService;
         private int _id;
         private string _title;
         private string _description;
@@ -31,11 +27,8 @@ namespace TestProject.Core.ViewModels
         #endregion
 
         #region Constructors
-        public ItemViewModel(IMvxNavigationService mvxNavigationService, ITaskService taskService, IAudioService audioService, IAPIService apiService) : base(mvxNavigationService)
+        public ItemViewModel(IMvxNavigationService mvxNavigationService, ITaskService taskService, IAudioService audioService, IAPIService apiService) :base(mvxNavigationService, taskService, audioService, apiService)
         {
-            _taskService = taskService;
-            _audioService = audioService;
-            _apiService = apiService;
             PermissionToPlay = false;
             IsREcordChecking = true;
             IsPlayChecking = true;
@@ -43,7 +36,7 @@ namespace TestProject.Core.ViewModels
             _audioService.OnPlaydStatusHandler = new Action(() =>
             {
                 IsPlayChecking = true;
-            });
+            });            
         }
         #endregion
 
@@ -182,7 +175,7 @@ namespace TestProject.Core.ViewModels
         {
             get
             {
-                if (!string.IsNullOrEmpty(Title.Trim()))
+                if (!string.IsNullOrEmpty(Title))
                 {
                     _saveTaskEnable = true;
                 }
@@ -292,19 +285,12 @@ namespace TestProject.Core.ViewModels
 
         private async void SaveTask()
         {
-            var TEST = new ChatService();
-            var chatmes = new ChatMessage()
+            TaskInfo taskInfo = new TaskInfo(Id, UserAccount.GetUserId(), Title, Description, Status, AudioFileName);
+            if (Title != null)
             {
-                Message = "heelo",
-                Name = "test"
+                await _apiService.InsertOrUpdateTaskAsync(taskInfo);
+            }
 
-            };
-     //     await  TEST.JoinGroup("test");
-          await  TEST.Send(chatmes, "heelo");
-
-            TaskInfo taskInfo = new TaskInfo(Id, UserAccount.GetUserId(), Title.Trim(), Description, Status, AudioFileName);
-
-            await _apiService.InsertOrUpdateTaskAsync(taskInfo);
             await _mvxNavigationService.Close(this);
         }
 
