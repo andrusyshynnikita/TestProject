@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<views:MvxContentPage
+        xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:TypeArguments="viewModels:AboutViewModel"
+    xmlns:mvx="clr-namespace:MvvmCross.Forms.Bindings;assembly=MvvmCross.Forms"
+    xmlns:views="clr-namespace:MvvmCross.Forms.Views;assembly=MvvmCross.Forms"
+    xmlns:viewModels="clr-namespace:TestProject.Core.ViewModels;assembly=TestProject.Core"
+    x:Class="TestProjectForms.Views.AboutView">
+    <ContentPage.Content>
+        <Grid>
+            <Button Text="Logout" x:Name="RevealCode" HorizontalOptions="Fill"  BackgroundColor="Blue" VerticalOptions="End"/>
+        </Grid>
+    </ContentPage.Content>
+</views:MvxContentPage>

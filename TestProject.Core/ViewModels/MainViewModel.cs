@@ -14,14 +14,11 @@ namespace TestProject.Core.ViewModels
     public class MainViewModel : BaseViewModel<object>
     {
         #region Variables
-        private ILoginService _loginService;
         #endregion
 
         #region Constructors
         public MainViewModel(IMvxNavigationService mvxNavigationService) : base(mvxNavigationService)
         {
-            _loginService = loginService;
-            _mvxNavigationService = mvxNavigationService;
             ShowCurrentViewModelCommand = new MvxAsyncCommand(ShowCurrentViewModel);
         }
         #endregion
@@ -37,12 +34,12 @@ namespace TestProject.Core.ViewModels
 
             if (CrossSettings.Current.Contains("Twitter") == true)
             {
-                _mvxNavigationService.Navigate<TasksContainerViewModel>();
+                await _mvxNavigationService.Navigate<TasksContainerViewModel>();
             }
 
             if (CrossSettings.Current.Contains("Twitter") == false)
             {
-                _mvxNavigationService.Navigate<LoginViewModel>();
+                await _mvxNavigationService.Navigate<LoginViewModel>();
             }
 
 

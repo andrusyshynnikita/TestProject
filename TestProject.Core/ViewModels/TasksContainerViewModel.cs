@@ -14,11 +14,10 @@ namespace TestProject.Core.ViewModels
         #region Variables
         private ILoginService _loginService;
         private IAPIService _aPIService;
-        private bool _isNetChecking;
         #endregion
 
         #region Constructors
-        public TasksContainerViewModel(IMvxNavigationService mvxNavigationService, ILoginService loginService, IAPIService aPIService): base(mvxNavigationService)
+        public TasksContainerViewModel(IMvxNavigationService mvxNavigationService, ILoginService loginService, IAPIService aPIService) : base(mvxNavigationService)
         {
             _loginService = loginService;
             _aPIService = aPIService;
@@ -28,7 +27,7 @@ namespace TestProject.Core.ViewModels
 
             AboutViewModel1.OnLogOutHandler = new Action(() =>
             {
-                 LogOut();
+                LogOut();
             });
 
             ShowDoneListItemViewModelCommand = new MvxAsyncCommand<Action>(async (closeHandler) => await _mvxNavigationService.Navigate<DoneListItemViewModel>());

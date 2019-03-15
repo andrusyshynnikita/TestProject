@@ -14,6 +14,9 @@ namespace TestProject.Core.ViewModels
     public class ItemViewModel : BaseViewModel<TaskInfo>
     {
         #region Variables
+        private readonly ITaskService _taskService;
+        private readonly IAudioService _audioService;
+        private readonly IAPIService _apiService;
         private int _id;
         private string _title;
         private string _description;
@@ -30,6 +33,9 @@ namespace TestProject.Core.ViewModels
         #region Constructors
         public ItemViewModel(IMvxNavigationService mvxNavigationService, ITaskService taskService, IAudioService audioService, IAPIService apiService) : base(mvxNavigationService)
         {
+            _taskService = taskService;
+            _audioService = audioService;
+            _apiService = apiService;
             PermissionToPlay = false;
             IsREcordChecking = true;
             IsPlayChecking = true;
@@ -71,7 +77,6 @@ namespace TestProject.Core.ViewModels
         public override async Task Initialize()
         {
             await base.Initialize();
-
         }
         #endregion
 
@@ -286,15 +291,15 @@ namespace TestProject.Core.ViewModels
 
         private async void SaveTask()
         {
-            var TEST = new ChatService();
-            var chatmes = new ChatMessage()
-            {
-                Message = "heelo",
-                Name = "test"
+            //var TEST = new ChatService();
+            //var chatmes = new ChatMessage()
+            //{
+            //    Message = "heelo",
+            //    Name = "test"
 
-            };
-     //     await  TEST.JoinGroup("test");
-          await  TEST.Send(chatmes, "heelo");
+            //};
+            //     await  TEST.JoinGroup("test");
+            //  await  TEST.Send(chatmes, "heelo");
 
             TaskInfo taskInfo = new TaskInfo(Id, UserAccount.GetUserId(), Title.Trim(), Description, Status, AudioFileName);
 

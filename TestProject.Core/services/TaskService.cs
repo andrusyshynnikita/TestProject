@@ -55,7 +55,7 @@ namespace TestProject.Core.services
             }
 
             else
-            _sQLiteConnection.Insert(taskInfo);
+                _sQLiteConnection.Insert(taskInfo);
         }
 
         public void DeleteUserAllTask(string user_id)

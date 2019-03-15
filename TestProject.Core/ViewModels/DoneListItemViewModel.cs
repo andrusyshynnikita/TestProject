@@ -15,17 +15,23 @@ namespace TestProject.Core.ViewModels
     {
         #region Variables
         private MvxObservableCollection<TaskInfo> _taskCollection;
+        private ITaskService _taskService;
         private MvxCommand _refreshCommand;
         private bool _isRefreshing;
+        private ILoginService _loginService;
+        private IAPIService _apiService;
 
         #endregion
 
         #region Constructors
-        public DoneListItemViewModel(IMvxNavigationService mvxNavigationService, ITaskService taskService, ILoginService loginService, IAPIService aPIService): base(mvxNavigationService, taskService, loginService, aPIService)
+        public DoneListItemViewModel(IMvxNavigationService mvxNavigationService, ITaskService taskService, ILoginService loginService, IAPIService aPIService) : base(mvxNavigationService)
         {
-
+            _apiService = aPIService;
+            _loginService = loginService;
+            _taskService = taskService;
             ShowSecondPageCommand = new MvxAsyncCommand(async () => await _mvxNavigationService.Navigate<ItemViewModel>());
             TaskViewCommand = new MvxAsyncCommand<TaskInfo>(TransferTaskInfo);
+            
         }
         #endregion
 

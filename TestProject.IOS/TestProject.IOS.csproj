@@ -129,6 +129,9 @@
       <HintPath>..\packages\Xamarin.Essentials.1.0.1\lib\xamarinios10\Xamarin.Essentials.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.iOS" />
+    <Reference Include="Xamarin.Swift4, Version=4.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xamarin.Swift4.4.0.0.2\lib\xamarinios10\Xamarin.Swift4.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppCustomIcon.appiconset\Icon-1024.png">
@@ -374,7 +377,6 @@
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard">
       <SubType>Designer</SubType>
     </InterfaceDefinition>
-    <None Include="packages.config" />
     <InterfaceDefinition Include="Views\LoginView.xib">
       <SubType>Designer</SubType>
     </InterfaceDefinition>
@@ -393,9 +395,11 @@
     <InterfaceDefinition Include="Views\Cells\TasksViewCell.xib" />
     <BundleResource Include="Resources\Coral_Pen_Free.ttf" />
     <BundleResource Include="Resources\FondyScript_PERSONAL_USE_ONLY.ttf" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\StatusToImageValueConverter.cs" />
+    <Compile Include="Helpers\Settings.cs" />
     <Compile Include="Views\BaseView.cs" />
     <Compile Include="Views\Cells\TasksViewCell.cs" />
     <Compile Include="Views\Cells\TasksViewCell.designer.cs">
@@ -439,11 +443,11 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
-  <Import Project="..\packages\Xamarin.Swift4.4.0.0.0\build\Xamarin.Swift4.targets" Condition="Exists('..\packages\Xamarin.Swift4.4.0.0.0\build\Xamarin.Swift4.targets')" />
+  <Import Project="..\packages\Xamarin.Swift4.4.0.0.2\build\Xamarin.Swift4.targets" Condition="Exists('..\packages\Xamarin.Swift4.4.0.0.2\build\Xamarin.Swift4.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Xamarin.Swift4.4.0.0.0\build\Xamarin.Swift4.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.Swift4.4.0.0.0\build\Xamarin.Swift4.targets'))" />
+    <Error Condition="!Exists('..\packages\Xamarin.Swift4.4.0.0.2\build\Xamarin.Swift4.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.Swift4.4.0.0.2\build\Xamarin.Swift4.targets'))" />
   </Target>
 </Project>

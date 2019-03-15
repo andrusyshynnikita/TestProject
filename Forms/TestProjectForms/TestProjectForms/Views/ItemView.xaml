@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:MvxContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:TypeArguments="viewModels:ItemViewModel"
+    x:Class="TestProjectForms.Views.ItemView"
+    xmlns:mvx="clr-namespace:MvvmCross.Forms.Bindings;assembly=MvvmCross.Forms"
+    xmlns:views="clr-namespace:MvvmCross.Forms.Views;assembly=MvvmCross.Forms"
+    xmlns:viewModels="clr-namespace:TestProject.Core.ViewModels;assembly=TestProject.Core"
+    xmlns:converters="clr-namespace:TestProjectForms.Converters">
+    <ContentPage.Resources>
+        <converters:TheNativeStatusToColorValueConverter x:Key="StatusToColor" />
+        <converters:TheNativeStatusToTitlePlayButtonValueConverter x:Key="StatusToTitlePlayButoon"/>
+        <converters:TheNativeStatusToTitleRecordButtonValueConverter x:Key="StatusToTitleRecordButton"/>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout>
+            <Entry
+                Text="{mvx:MvxBind Title}"
+                HorizontalTextAlignment="Center"
+                Placeholder="Title"
+                Margin="10,20,10,0"
+                BackgroundColor="Yellow">
+            </Entry>
+            <Editor
+                Text="{mvx:MvxBind Description}"
+                Placeholder="Description"
+                HeightRequest="100"
+                BackgroundColor="Yellow"
+                Margin="10,10,10,0">
+            </Editor>
+            <StackLayout
+                Orientation="Horizontal"
+                Margin="0,10,0,0"
+                Spacing="10">
+                <Switch
+                    Margin="20,0,0,0"
+                    HorizontalOptions="Start"
+                    IsToggled="{Binding Status}"/>
+                <Label
+                    Margin="0,0,5,0"
+                    Text="Done"
+                    FontSize="Medium"/>
+            </StackLayout>
+
+            <StackLayout
+                Orientation="Horizontal"
+                 Margin="15,10,0,0"
+                Spacing="10">
+                <Button
+                    Text=" Save "
+                    Padding="10,0,10,0"
+                    BackgroundColor="Green"
+                    IsVisible="{Binding IsSavingTaskEnable}"
+                    Command="{mvx:MvxBind SaveCommand}"/>
+                
+                <Button
+                    Text="Delete"
+                    Padding="10,0,10,0"
+                    BackgroundColor="Red"
+                    IsVisible="{Binding IsDeletingTaskEnable}"
+                    Command="{mvx:MvxBind DeleteCommand}"/>
+                
+            </StackLayout>
+            <Label
+                Text="Audio Note"
+                Margin="15,10,0,0"/>
+            <StackLayout
+                Orientation="Horizontal"
+                Margin="15,10,0,0"
+                Spacing="10">
+                <Button
+                    Text= "{Binding IsREcordChecking, Converter={StaticResource StatusToTitleRecordButton}}"
+                    Command="{mvx:MvxBind StartRecordingCommand}"
+                    BackgroundColor="{Binding IsREcordChecking, Converter={StaticResource StatusToColor}}"/>
+
+                <Button
+                    Text= "{Binding IsPlayChecking, Converter={StaticResource StatusToTitlePlayButoon}}"
+                    Command="{mvx:MvxBind PlayRecordingCommand}"
+                    IsEnabled="{Binding PermissionToPlay}"
+                    BackgroundColor="{Binding IsPlayChecking, Converter={StaticResource StatusToColor}}"/>
+
+            </StackLayout>
+            <DatePicker Format="D" DateSelected="DatePicker_DateSelected">
+                <DatePicker.MinimumDate>3/01/2019</DatePicker.MinimumDate>
+                <DatePicker.MaximumDate>3/30/2019</DatePicker.MaximumDate>
+            </DatePicker>
+        </StackLayout>
+    </ContentPage.Content>
+</views:MvxContentPage>

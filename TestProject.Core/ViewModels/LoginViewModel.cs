@@ -11,11 +11,14 @@ namespace TestProject.Core.ViewModels
     public class LoginViewModel : BaseViewModel<object>
     {
         #region Variables
+        private ILoginService _loginService;
         #endregion
 
         #region Constructors
-        public LoginViewModel(IMvxNavigationService mvxNavigationService, ILoginService loginService) : base(mvxNavigationService, loginService)
+        public LoginViewModel(IMvxNavigationService mvxNavigationService, ILoginService loginService) : base(mvxNavigationService)
         {
+            _loginService = loginService;
+
             _loginService.OnLoggedInHandler = new Action(() =>
             {
                 ShowViewPager.Execute();
@@ -25,6 +28,10 @@ namespace TestProject.Core.ViewModels
 
         #region Commands
         public IMvxCommand LoginCommand => new MvxCommand(_loginService.LoginTwitter);
+        public IMvxCommand menuCommand => new MvxCommand(()=> 
+        {
+            _mvxNavigationService.Navigate<menuViewModel>();
+        });
 
         public IMvxAsyncCommand ShowViewPager
         {

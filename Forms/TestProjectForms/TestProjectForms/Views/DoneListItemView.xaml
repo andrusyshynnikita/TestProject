@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:MvxContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:TypeArguments="viewModels:DoneListItemViewModel"
+    x:Class="TestProjectForms.Views.DoneListItemView"
+    xmlns:mvx="clr-namespace:MvvmCross.Forms.Bindings;assembly=MvvmCross.Forms"
+    xmlns:views="clr-namespace:MvvmCross.Forms.Views;assembly=MvvmCross.Forms"
+    xmlns:viewModels="clr-namespace:TestProject.Core.ViewModels;assembly=TestProject.Core">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem
+            Name="AddNewTask"
+            Order="Primary"
+            Icon="baseline_add_box_black_24dp.png"
+            Command="{mvx:MvxBind ShowSecondPageCommand}"
+            Priority="0"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <Grid>
+            <views:MvxListView 
+                x:Name="testlistview"
+                HorizontalOptions="FillAndExpand" 
+                VerticalOptions="FillAndExpand"
+                SelectionMode="None"
+                ItemsSource="{mvx:MvxBind TaskCollection}" 
+                ItemClick="{mvx:MvxBind TaskViewCommand}"
+                RefreshCommand="{mvx:MvxBind RefreshCommand}"
+                IsRefreshing="{Binding  IsRefreshing}"
+                IsPullToRefreshEnabled="True"
+                BackgroundColor="Gray"
+                RowHeight="55"
+                SeparatorColor="Gray" >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <views:MvxViewCell>
+                            <Frame Padding="5" Margin="5" CornerRadius="10">
+                            <StackLayout
+                                Orientation="Horizontal"
+                                BackgroundColor="White">
+                            <Label  
+                                FontSize="Medium"
+                                Margin="10,0,0,0"
+                                HorizontalOptions="StartAndExpand"
+                                HorizontalTextAlignment="Start"
+                                VerticalOptions="Center" 
+                                VerticalTextAlignment="Center"
+                                TextColor="Green"
+                                FontAttributes="Bold"
+                                mvx:Bi.nd="Text Title" />
+                            <Switch
+                                mvx:Bi.nd="IsToggled Status"
+                                HorizontalOptions="End"
+                                Margin="0,0,15,0"/>
+                            </StackLayout>
+                            </Frame>
+                        </views:MvxViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </views:MvxListView>
+        </Grid>
+    </ContentPage.Content>
+</views:MvxContentPage>
