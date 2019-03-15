@@ -7,6 +7,7 @@ using TestProject.Core.Models;
 using System;
 using TestProject.Core.Helper;
 using Xamarin.Essentials;
+using TestProject.Core.services;
 
 namespace TestProject.Core.ViewModels
 {
@@ -27,7 +28,7 @@ namespace TestProject.Core.ViewModels
         #endregion
 
         #region Constructors
-        public ItemViewModel(IMvxNavigationService mvxNavigationService, ITaskService taskService, IAudioService audioService, IAPIService apiService) :base(mvxNavigationService, taskService, audioService, apiService)
+        public ItemViewModel(IMvxNavigationService mvxNavigationService, ITaskService taskService, IAudioService audioService, IAPIService apiService) : base(mvxNavigationService)
         {
             PermissionToPlay = false;
             IsREcordChecking = true;
@@ -36,7 +37,7 @@ namespace TestProject.Core.ViewModels
             _audioService.OnPlaydStatusHandler = new Action(() =>
             {
                 IsPlayChecking = true;
-            });            
+            });
         }
         #endregion
 
@@ -175,7 +176,7 @@ namespace TestProject.Core.ViewModels
         {
             get
             {
-                if (!string.IsNullOrEmpty(Title))
+                if (!string.IsNullOrEmpty(Title.Trim()))
                 {
                     _saveTaskEnable = true;
                 }
@@ -285,12 +286,19 @@ namespace TestProject.Core.ViewModels
 
         private async void SaveTask()
         {
-            TaskInfo taskInfo = new TaskInfo(Id, UserAccount.GetUserId(), Title, Description, Status, AudioFileName);
-            if (Title != null)
+            var TEST = new ChatService();
+            var chatmes = new ChatMessage()
             {
-                await _apiService.InsertOrUpdateTaskAsync(taskInfo);
-            }
+                Message = "heelo",
+                Name = "test"
 
+            };
+     //     await  TEST.JoinGroup("test");
+          await  TEST.Send(chatmes, "heelo");
+
+            TaskInfo taskInfo = new TaskInfo(Id, UserAccount.GetUserId(), Title.Trim(), Description, Status, AudioFileName);
+
+            await _apiService.InsertOrUpdateTaskAsync(taskInfo);
             await _mvxNavigationService.Close(this);
         }
 
