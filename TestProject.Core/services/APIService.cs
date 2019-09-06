@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Plugin.Media.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using TestProject.Core.Helper;
@@ -29,7 +31,7 @@ namespace TestProject.Core.services
 
         public async Task RefreshDataAsync()
         {
-            Uri uri = new Uri(string.Format("http://10.10.3.221:58778/api/tasks/" + UserAccount.GetUserId()));
+            Uri uri = new Uri(string.Format("http://10.10.2.144:3000/api/tasks/" + UserAccount.GetUserId()));
 
             var response = await _client.GetAsync(uri);
 
@@ -46,24 +48,14 @@ namespace TestProject.Core.services
 
         public async Task InsertOrUpdateTaskAsync(TaskInfo item)
         {
-            var content = new MultipartFormDataContent();
 
             bool initial_File = File.Exists(Constants.INITIAL_AUDIO_FILE_PATH);
-           
+
             if (initial_File == true)
             {
-                _byteArrayAudio = File.ReadAllBytes(Constants.INITIAL_AUDIO_FILE_PATH);
-
-                _audioContent = new ByteArrayContent(_byteArrayAudio);
+                item.AudioFileContent = File.ReadAllBytes(Constants.INITIAL_AUDIO_FILE_PATH);
 
                 File.Delete(Constants.INITIAL_AUDIO_FILE_PATH);
-            }
-          
-            if (item.AudioFileName != null && initial_File == true)
-            {
-                content.Add(_audioContent,
-            "\"file\"",
-            $"\"{item.AudioFileName}\"");
             }
 
             if (item.AudioFileName == null && initial_File == true)
@@ -71,17 +63,18 @@ namespace TestProject.Core.services
                 var fileName = Guid.NewGuid() + ".m4a";
 
                 item.AudioFileName = fileName;
-
-                content.Add(_audioContent,
-            "\"file\"",
-            $"\"{fileName}\"");
             }
 
-            var uri = new Uri(string.Format("http://10.10.3.221:58778/api/Files/Upload"));
-
-            var json = JsonConvert.SerializeObject(item);
-
-            content.Add(new StringContent(json, Encoding.UTF8, "application/json"), "\"TaskModel\"");
+            var uri = new Uri(string.Format("http://10.10.2.144:3000/api/Files/Upload"));
+            var settings = new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                NullValueHandling = NullValueHandling.Ignore
+            };
+            var body = JsonConvert.SerializeObject(item, Formatting.Indented, settings);
+            var buffer = Encoding.UTF8.GetBytes(body);
+            var byteContent = new ByteArrayContent(buffer);
+            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
             HttpResponseMessage response = null;
 
@@ -89,12 +82,12 @@ namespace TestProject.Core.services
             {
                 if (item.Id == 0)
                 {
-                    response = await _client.PostAsync(uri, content);
+                    response = await _client.PostAsync(uri, byteContent);
                 }
 
                 else
                 {
-                    response = await _client.PutAsync(uri, content);
+                    response = await _client.PutAsync(uri, byteContent);
                 }
 
                 if (response.IsSuccessStatusCode)
@@ -119,7 +112,7 @@ namespace TestProject.Core.services
 
             var json = JsonConvert.SerializeObject(item);
 
-            Uri uri = new Uri(string.Format("http://10.10.3.221:58778/api/tasks/" + item.Id));
+            Uri uri = new Uri(string.Format("http://10.10.2.144:3000/api/tasks/" + item.Id));
 
             var response = await _client.DeleteAsync(uri);
 
@@ -131,7 +124,7 @@ namespace TestProject.Core.services
 
         public async Task DownloadAudioFile(int id, string path)
         {
-            var uri = new Uri("http://10.10.3.221:58778/api/DownloadFile/" + id);
+            var uri = new Uri("http://10.10.2.144:3000/api/DownloadFile/" + id);
 
             var response = await _client.GetAsync(uri);
 
