@@ -49,6 +49,16 @@ namespace TestProject.Core.ViewModels
                 RaisePropertyChanged(() => IsNetChecking);
             }
         }
+
+        private bool _isBusy;
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set
+            {
+                SetProperty(ref _isBusy, value);
+            }
+        }
         #endregion
 
         #region Methods

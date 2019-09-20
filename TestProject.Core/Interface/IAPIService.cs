@@ -6,7 +6,7 @@ using TestProject.Core.Models;
 
 namespace TestProject.Core.Interface
 {
-   public interface IAPIService
+    public interface IAPIService
     {
         Task RefreshDataAsync();
         Task InsertOrUpdateTaskAsync(TaskInfo item);

@@ -23,6 +23,10 @@ namespace TestProject.IOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIActivityIndicatorView loader { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIView MainUIView { get; set; }
 
         [Outlet]
@@ -40,6 +44,10 @@ namespace TestProject.IOS.Views
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIButton Save_button { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIActivityIndicatorView saveLoader { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -65,6 +73,11 @@ namespace TestProject.IOS.Views
                 Description_text = null;
             }
 
+            if (loader != null) {
+                loader.Dispose ();
+                loader = null;
+            }
+
             if (MainUIView != null) {
                 MainUIView.Dispose ();
                 MainUIView = null;
@@ -88,6 +101,11 @@ namespace TestProject.IOS.Views
             if (Save_button != null) {
                 Save_button.Dispose ();
                 Save_button = null;
+            }
+
+            if (saveLoader != null) {
+                saveLoader.Dispose ();
+                saveLoader = null;
             }
 
             if (Scrollview != null) {

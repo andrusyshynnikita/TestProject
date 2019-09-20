@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using TestProject.Core.Configuration.Interfaces;
 using TestProject.Core.Helper;
 using TestProject.Core.Interface;
 using TestProject.Core.Models;
@@ -17,32 +18,38 @@ namespace TestProject.Core.services
 {
     public class APIService : IAPIService
     {
-        private HttpClient _client;
-        private ITaskService _taskService;
-        private byte[] _byteArrayAudio;
-        private ByteArrayContent _audioContent;
-        private List<TaskInfo> _tasks;
+        private readonly ITaskService _taskService;
+        private readonly IHttpService _httpService;
+        private readonly IAPIConfiguration _configuration;
+        private readonly string _controllerPath;
 
-        public APIService(ITaskService taskService)
+        public APIService(ITaskService taskService, IHttpService httpService, IAPIConfiguration configuration)
         {
-            _client = new HttpClient();
             _taskService = taskService;
+            _httpService = httpService;
+            _configuration = configuration;
+            _controllerPath = "/api/tasks";
         }
 
         public async Task RefreshDataAsync()
         {
-            Uri uri = new Uri(string.Format("http://10.10.2.144:3000/api/tasks/" + UserAccount.GetUserId()));
+            string urlString = $"{_configuration.CloudHostUrl}{_controllerPath}/GetTasks/{UserAccount.GetUserId()}";
 
-            var response = await _client.GetAsync(uri);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var content = await response.Content.ReadAsStringAsync();
-                _tasks = JsonConvert.DeserializeObject<List<TaskInfo>>(content);
+                var response = await _httpService.SendHTTPRequest(urlString);
 
-                _taskService.DeleteUserAllTask(UserAccount.GetUserId());
-                _taskService.InsertAllUserTasks(_tasks);
+                if (!response.IsNetworkError && response.StatusCode == HttpStatusCode.OK)
+                {
+                    var tasks = JsonConvert.DeserializeObject<List<TaskInfo>>(response.ResponseString);
 
+                    _taskService.DeleteUserAllTask(UserAccount.GetUserId());
+                    _taskService.InsertAllUserTasks(tasks);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -65,42 +72,21 @@ namespace TestProject.Core.services
                 item.AudioFileName = fileName;
             }
 
-            var uri = new Uri(string.Format("http://10.10.2.144:3000/api/Files/Upload"));
+            string urlString = $"{_configuration.CloudHostUrl}{_controllerPath}/PostTask";
+
             var settings = new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 NullValueHandling = NullValueHandling.Ignore
             };
             var body = JsonConvert.SerializeObject(item, Formatting.Indented, settings);
-            var buffer = Encoding.UTF8.GetBytes(body);
-            var byteContent = new ByteArrayContent(buffer);
-            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-            HttpResponseMessage response = null;
+            RequestResponse response = await _httpService.SendHTTPRequest(urlString, HTTP.Post, null, body);
 
-            try
+            if (!response.IsNetworkError && response.StatusCode == HttpStatusCode.OK)
             {
-                if (item.Id == 0)
-                {
-                    response = await _client.PostAsync(uri, byteContent);
-                }
-
-                else
-                {
-                    response = await _client.PutAsync(uri, byteContent);
-                }
-
-                if (response.IsSuccessStatusCode)
-                {
-                    _taskService.InsertTask(item);
-                }
+                _taskService.InsertTask(item);
             }
-
-            catch (WebException e)
-            {
-                throw new WebException(e.Message);
-            }
-
         }
 
         public async Task DeleteTaskAsync(TaskInfo item)
@@ -109,14 +95,16 @@ namespace TestProject.Core.services
             {
                 File.Delete(Constants.INITIAL_AUDIO_FILE_PATH);
             }
+            if (!string.IsNullOrEmpty(item?.AudioFileName) && File.Exists(Constants.AUDIO_FILE_PATH(item?.AudioFileName)))
+            {
+                File.Delete(Constants.AUDIO_FILE_PATH(item?.AudioFileName));
+            }
 
-            var json = JsonConvert.SerializeObject(item);
+            string urlString = $"{_configuration.CloudHostUrl}{_controllerPath}/DeleteTasks/{item.Id}";
 
-            Uri uri = new Uri(string.Format("http://10.10.2.144:3000/api/tasks/" + item.Id));
+            RequestResponse response = await _httpService.SendHTTPRequest(urlString);
 
-            var response = await _client.DeleteAsync(uri);
-
-            if (response.IsSuccessStatusCode)
+            if (!response.IsNetworkError && response.StatusCode == HttpStatusCode.OK)
             {
                 _taskService.DeleteTask(item.Id);
             }
@@ -124,14 +112,15 @@ namespace TestProject.Core.services
 
         public async Task DownloadAudioFile(int id, string path)
         {
-            var uri = new Uri("http://10.10.2.144:3000/api/DownloadFile/" + id);
+            string urlString = $"{_configuration.CloudHostUrl}{_controllerPath}/GetAudioFile/{id}";
 
-            var response = await _client.GetAsync(uri);
+            var response = await _httpService.SendHTTPRequest(urlString);
 
-            if (response.IsSuccessStatusCode)
+            if (!response.IsNetworkError && response.StatusCode == HttpStatusCode.OK)
             {
-                var content = await response.Content.ReadAsByteArrayAsync();
-                File.WriteAllBytes(Constants.AUDIO_FILE_PATH(path), content);
+                var tasks = JsonConvert.DeserializeObject<TaskInfo>(response.ResponseString);
+
+                await StorageHelper.WriteByteToFileAsync(Constants.AUDIO_FILE_PATH(path), tasks.AudioFileContent);
             }
         }
 

@@ -402,6 +402,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\StatusToImageValueConverter.cs" />
+    <Compile Include="CustomBinding\ActivityIndicatorViewHiddenTargetBinding.cs" />
     <Compile Include="Helpers\Settings.cs" />
     <Compile Include="Views\BaseView.cs" />
     <Compile Include="Views\Cells\TasksViewCell.cs" />

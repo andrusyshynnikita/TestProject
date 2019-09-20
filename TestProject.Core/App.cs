@@ -1,6 +1,8 @@
 ﻿using MvvmCross.ViewModels;
 using MvvmCross.IoC;
-
+using MvvmCross;
+using TestProject.Core.Configuration.Interfaces;
+using TestProject.Core.Configuration;
 
 namespace TestProject.Core
 {
@@ -8,6 +10,8 @@ namespace TestProject.Core
     {
         public override void Initialize()
         {
+            Mvx.IoCProvider.RegisterSingleton<IAPIConfiguration>(new LocalAPIConfiguration());
+
             CreatableTypes()
                 .EndingWith("Service")
                 .AsInterfaces()

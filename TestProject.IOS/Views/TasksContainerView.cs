@@ -7,7 +7,7 @@ using UIKit;
 
 namespace TestProject.IOS.Views
 {
-    [MvxRootPresentation(WrapInNavigationController =false)]
+    [MvxRootPresentation(WrapInNavigationController = false)]
     public class TasksContainerView : MvxTabBarViewController<TasksContainerViewModel>
     {
         #region Variables

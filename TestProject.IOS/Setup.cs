@@ -6,6 +6,7 @@ using MvvmCross.Platforms.Ios.Core;
 using MvvmCross.Plugin.Json;
 using MvvmCross.ViewModels;
 using TestProject.Core;
+using TestProject.IOS.CustomBinding;
 using UIKit;
 
 namespace TestProject.IOS
@@ -23,7 +24,8 @@ namespace TestProject.IOS
         {
             base.InitializeLastChance();
 
-            var registry = Mvx.Resolve<IMvxTargetBindingFactoryRegistry>();          
+            var registry = Mvx.IoCProvider.Resolve<IMvxTargetBindingFactoryRegistry>();
+            registry.RegisterCustomBindingFactory<UIActivityIndicatorView>("IsLoading", view => new ActivityIndicatorViewHiddenTargetBinding(view));
         }
 
         protected override IMvxIocOptions CreateIocOptions()

@@ -11,7 +11,7 @@ namespace TestProject.IOS.Views
         #region LifeCycle
         public override void ViewDidLoad()
         {
-            base.ViewDidLoad();          
+            base.ViewDidLoad();
 
             this.Title_text.ShouldReturn += (textField) =>
             {
@@ -46,7 +46,8 @@ namespace TestProject.IOS.Views
                 Description_text.TextColor = new UIColor(0.78f, 0.78f, 0.8f, 1.0f);
             }
 
-            Description_text.ShouldBeginEditing = t => {
+            Description_text.ShouldBeginEditing = t =>
+            {
                 if (Description_text.Text == Placeholder)
                 {
                     Description_text.Text = string.Empty;
@@ -72,14 +73,20 @@ namespace TestProject.IOS.Views
             var set = this.CreateBindingSet<ItemView, ItemViewModel>();
             set.Bind(Title_text).To(vm => vm.Title);
             set.Bind(Title_text).For(v => v.Enabled).To(vm => vm.IsTitleEnable);
+
             set.Bind(Description_text).To(vm => vm.Description);
             set.Bind(Status_switch1).To(vm => vm.Status);
+
             set.Bind(Save_button).To(vm => vm.SaveCommand);
             set.Bind(Save_button).For(v => v.Enabled).To(vm => vm.IsSavingTaskEnable);
             set.Bind(Save_button).For("Visibility").To(vm => vm.IsNetChecking).WithConversion("Visibility");
+            set.Bind(Save_button).For(btn => btn.Hidden).To(vm => vm.IsSavingProcessing);
+
             set.Bind(Delete_button).To(vm => vm.DeleteCommand);
             set.Bind(Delete_button).For(v => v.Enabled).To(vm => vm.IsDeletingTaskEnable);
             set.Bind(Delete_button).For("Visibility").To(vm => vm.IsNetChecking).WithConversion("Visibility");
+            set.Bind(Delete_button).For(btn => btn.Hidden).To(vm => vm.IsBusy);
+
             set.Bind(_btnBack).For("Clicked").To(vm => vm.CloseCommand);
             set.Bind(recording).To(vm => vm.StartRecordingCommand);
             set.Bind(recording).For(v => v.BackgroundColor).To(vm => vm.IsREcordChecking).WithConversion("StatusToColor");
@@ -89,6 +96,8 @@ namespace TestProject.IOS.Views
             set.Bind(Play).For(v => v.BackgroundColor).To(vm => vm.IsPlayChecking).WithConversion("StatusToColor");
             set.Bind(Play).For("Title").To(vm => vm.IsPlayChecking).WithConversion("StatusToTitlePlayButton");
             set.Bind(netWork_label).For("Visibility").To(vm => vm.IsNetChecking).WithConversion("ReverseVisibility");
+            set.Bind(loader).For("IsLoading").To(vm => vm.IsBusy).WithConversion("ReverseBool");
+            set.Bind(saveLoader).For("IsLoading").To(vm => vm.IsSavingProcessing).WithConversion("ReverseBool");
             set.Apply();
         }
         #endregion

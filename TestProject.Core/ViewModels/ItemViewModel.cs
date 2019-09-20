@@ -231,6 +231,13 @@ namespace TestProject.Core.ViewModels
             }
         }
 
+        private bool _isSavingProcessing;
+        public bool IsSavingProcessing
+        {
+            get => _isSavingProcessing;
+
+            set => SetProperty(ref _isSavingProcessing, value);
+        }
         public bool PermissionToPlay
         {
             get
@@ -302,16 +309,17 @@ namespace TestProject.Core.ViewModels
             //  await  TEST.Send(chatmes, "heelo");
 
             TaskInfo taskInfo = new TaskInfo(Id, UserAccount.GetUserId(), Title.Trim(), Description, Status, AudioFileName);
-
+            IsSavingProcessing = true;
             await _apiService.InsertOrUpdateTaskAsync(taskInfo);
             await _mvxNavigationService.Close(this);
+            IsSavingProcessing = false;
         }
 
         private async void DeleteTask()
         {
-
+            IsBusy = true;
             await _apiService.DeleteTaskAsync(new TaskInfo(Id, UserAccount.GetUserId(), Title, Description, Status, AudioFileName));
-
+            IsBusy = false;
             await _mvxNavigationService.Close(this);
         }
         #endregion
