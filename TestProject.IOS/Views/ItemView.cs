@@ -98,6 +98,7 @@ namespace TestProject.IOS.Views
             set.Bind(netWork_label).For("Visibility").To(vm => vm.IsNetChecking).WithConversion("ReverseVisibility");
             set.Bind(loader).For("IsLoading").To(vm => vm.IsBusy).WithConversion("ReverseBool");
             set.Bind(saveLoader).For("IsLoading").To(vm => vm.IsSavingProcessing).WithConversion("ReverseBool");
+
             set.Apply();
         }
         #endregion

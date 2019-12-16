@@ -102,7 +102,7 @@ namespace TestProject.Core.services
 
             string urlString = $"{_configuration.CloudHostUrl}{_controllerPath}/DeleteTasks/{item.Id}";
 
-            RequestResponse response = await _httpService.SendHTTPRequest(urlString);
+            RequestResponse response = await _httpService.SendHTTPRequest(urlString, HTTP.Delete);
 
             if (!response.IsNetworkError && response.StatusCode == HttpStatusCode.OK)
             {
